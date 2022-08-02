@@ -13,7 +13,7 @@ export default defineConfig(({ command, mode }) => {
   const root = process.cwd();
   // The boolean type read by loadEnv is a string. This function can be converted to boolean type
   const viteEnv = wrapperEnv(env);
-  console.log(viteEnv);
+  // console.log(viteEnv);
 
   const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } =
     viteEnv;

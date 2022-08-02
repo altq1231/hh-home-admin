@@ -1,6 +1,6 @@
 <template>
   <div class="home-page container-wrapper">
-    <Head></Head>
+    <!-- <Head></Head> -->
     home
   </div>
 </template>
@@ -48,7 +48,7 @@ const handleClick = () => {
 <style scoped lang="less">
 .home-page {
   width: 100%;
-
+  height: 1600px;
   .test-div {
     width: 200px;
     height: 1600px;

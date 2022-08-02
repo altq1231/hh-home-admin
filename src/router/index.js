@@ -47,35 +47,39 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   NProgress.start();
   // to and from are both route objects. must call `next`.
-  // const jwt = sessionStorage.getItem("jwt") || "";
+  const jwt = sessionStorage.getItem("jwt") || "";
 
-  // document.title = jwt ? (to.meta.title ? to.meta.title + " - 管理应用" : "管理系统") : "系统登录";
+  document.title = jwt
+    ? to.meta.title
+      ? to.meta.title + " - 管理应用"
+      : "管理系统"
+    : "系统登录";
   document.title = to.meta.title;
-  next();
+
   // console.log(2222, to.path);
-  // if (to.path === "/login" || to.path === "" || to.path === "/" || to.path === "/num-scroll") {
-  //   // console.log(2222, !!jwt);
-  //   next();
-  //   // !!jwt ? next("/") : next();
-  // } else {
-  //   if (from.path === "/login" && !jwt) {
-  //     NProgress.done(true);
-  //     next("/login");
-  //     return;
-  //   }
-  //   if (!!jwt) {
-  //     // console.log(111, to.meta.hasOwnProperty("roles"));
-  //     if (to.meta.hasOwnProperty("roles")) {
-  //       let roles = to.meta.roles || [],
-  //         { role } = jwt && JSON.parse(decode(jwt));
-  //       roles.includes(role) ? next() : next("/404");
-  //       return;
-  //     }
-  //     next();
-  //   } else {
-  //     next("/login");
-  //   }
-  // }
+  if (to.path === "/login" || to.path === "/num-scroll") {
+    // console.log(2222, !!jwt);
+
+    !!jwt ? next("/") : next();
+  } else {
+    if (from.path === "/login" && !jwt) {
+      NProgress.done(true);
+      next("/login");
+      return;
+    }
+    if (!!jwt) {
+      // console.log(111, to.meta.hasOwnProperty("roles"));
+      if (to.meta.hasOwnProperty("roles")) {
+        let roles = to.meta.roles || [],
+          { role } = jwt && JSON.parse(decode(jwt));
+        roles.includes(role) ? next() : next("/404");
+        return;
+      }
+      next();
+    } else {
+      next("/login");
+    }
+  }
 });
 
 router.afterEach(() => {
