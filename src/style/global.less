@@ -1,0 +1,156 @@
+@import "./theme.less"; // 用于覆盖上面定义的变量
+@import "./init.less"; // 用于覆盖上面定义的变量
+
+@font-face {
+  font-family: PuHuiRegular;
+  src: url("../assets/fonts/AlibabaPuHuiTi-2-55-Regular.otf");
+}
+@font-face {
+  font-family: PuHuiMedium;
+  src: url("../assets/fonts/AlibabaPuHuiTi-2-65-Medium.otf");
+}
+@font-face {
+  font-family: PuHuiSemiBold;
+  src: url("../assets/fonts/AlibabaPuHuiTi-2-75-SemiBold.otf");
+}
+
+html,
+body,
+#app,
+.app-vue {
+  background-color: #fafafa;
+  color: #000000;
+  font-family: PuHuiRegular, Roboto Slab, sans-serif, Arial, Helvetica;
+  width: 100%;
+  font-size: 16px;
+}
+
+// * {
+//   user-select: none;
+// }
+
+#nprogress {
+  pointer-events: none;
+  z-index: 99999;
+
+  .bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99999;
+    height: 2px;
+    background-color: @primary-color;
+    opacity: 0.75;
+  }
+
+  .spinner-icon {
+    border-top-color: @primary-color;
+    border-left-color: @primary-color;
+  }
+}
+
+.nothing-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+  width: 100%;
+  height: 100vh;
+
+  .right-info {
+    flex: 0 0 17rem;
+    width: 17rem;
+    overflow: hidden;
+    margin-left: 2rem;
+
+    h1 {
+      font-size: 3rem;
+      color: #333333;
+      line-height: 3.5rem;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: rgba(#333333, 0.6);
+      line-height: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .bottom-back {
+    flex: 0 0 1.6rem;
+    height: 1.6rem;
+  }
+}
+
+.no-data-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+/*           默认宽度          */
+.common-width-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* 可以设置不同的进入和离开动画   */
+/* 设置持续时间和动画函数        */
+.slide-fade-enter-active {
+  transition: all 0.2s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-top-enter-active {
+  transition: all 0.2s ease-out;
+}
+
+.slide-top-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-top-enter-from,
+.slide-top-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+// 页面宽度
+.container-wrapper {
+  width: 100%;
+  min-width: 1226px;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.container {
+  width: 1226px;
+  margin: 0 auto;
+}

@@ -1,0 +1,217 @@
+@import "../../node_modules/ant-design-vue/dist/antd.less";
+
+@primary-color: #0a7aff; // 全局主色
+
+// 布局
+@layout-header-background: #0a7aff; // 头部背景色
+@layout-body-background: #fff; // 布局body背景色
+@layout-body-background-reverse: rgba(216, 216, 216, 0.1); // 布局body背景色反色
+@layout-header-color: #fff;
+@layout-footer-background: #fff;
+@background-color-base: #fff; //默认背景色
+@background-color-light: rgba(14, 10, 10, 0.1); //高亮背景色
+@body-background: #fff; //body 背景色
+
+// menu
+@menu-bg: #fff; //menu 背景色
+@menu-item-active-bg: #cce4ff;
+@menu-item-color: #cce4ff;
+@menu-highlight-color: #0a7aff; //menu item 高亮色
+@menu-dark-color: @text-color;
+// @dropdown-menu-submenu-disabled-bg: #e9eaec;
+// 组件
+@component-background: #fff; //组件背景色
+
+@link-color: #0a7aff; // 链接色
+@box-border-container: rgba(255, 255, 255, 0.5); //区块边框颜色
+@success-color: #00c653; // 成功色
+@warning-color: #f9a214; // 警告色
+@info-color: #0a7aff;
+@error-color: #ff5c5a; // 错误色
+@highlight-color: #ff5c5a; //高亮色
+@font-size-base: 14px; // 主字号
+@heading-color: #000000; // 标题色
+@text-color: #000000; // 主文本色
+@text-color-secondary: #333333;
+@text-color-inverse: #ffffff; //反转文本色
+@text-selection-bg: #0a7aff;
+@heading-color-dark: #fcfcfc; //深色标题色
+@text-color-secondary-dark: #999999; //深色二级文本色
+@text-color-dark: #ffffffcc; //深色文本色
+@disabled-bg: #e9eaec; // 禁用背景色
+@disabled-color: #cccfd8; // 失效色
+@border-radius-base: 2px; // 组件/浮层圆角
+@border-color-base: #dadce6; // 边框颜色
+@border-color-split: #e6e6e6; //分割颜色
+@border-color-inverse: #dadce6; //inverse 颜色
+@box-shadow-base: 0 2px 8px rgba(0, 0, 0, 0.15); // 浮层阴影
+
+// vertical paddings
+@padding-lg: 16px; // containers
+@padding-md: 12px; // small containers and buttons
+@padding-sm: 10px; // Form controls and items
+@padding-xs: 8px; // small items
+@padding-xss: 4px; // more small
+
+// height rules
+@height-base: 30px;
+@height-lg: 36px;
+@height-sm: 22px;
+
+// input
+@input-placeholder-color: #b3b6c7;
+@input-padding-horizontal: 10px;
+
+//button 组件颜色
+@btn-default-bg: #fff; //button默认背景色
+@btn-default-border: #dadce6; //button默认边框色
+@btn-danger-bg: #ff5c5a;
+@btn-danger-border: #ff5c5a;
+@btn-padding-base: 0 19px;
+
+// Select
+@select-dropdown-height: 32px;
+@select-dropdown-vertical-padding: 5px;
+
+@item-active-bg: #cce4ff; //item选中背景色
+@item-hover-bg: #cce4ff; //item hover背景色
+@select-item-selected-bg: #cce4ff; //选择框item选中背景色
+@select-selection-item-bg: #cce4ff; //选择框选项选中背景色
+@cascader-item-selected-bg: #cce4ff; //级联选择item选中背景色
+@select-item-active-bg: #cce4ff; //选择框选项Active背景色
+@primary-2: #cce4ff; //树节点选中背景色
+@tree-node-selected-bg: #cce4ff; //树节点选中背景色
+@calendar-item-active-bg: #cce4ff; //日历选中背景色
+@calendar-full-bg: #cce4ff; //日历选中背景色
+@calendar-full-panel-bg: #cce4ff; //日历选中背景色
+
+// slider组件
+@slider-rail-background-color: #ebebeb; //滑动条背景色
+@slider-rail-background-color-hover: #ebebeb; //滑动条hover色
+@slider-track-background-color: #0a7aff; //填充区域背景色
+@slider-track-background-color-hover: #0a7aff; //填充区域hover色
+@slider-handle-background-color: #fff; //滑块背景色
+@slider-handle-color: #0a7aff; //滑块色
+@slider-handle-color-hover: #0a7aff; //滑块hover色
+@slider-dot-border-color: #d3d5e2;
+
+// TimeLine
+@timeline-color: #dadce6; //时间线线条背景色
+
+// Tag
+@tag-default-bg: #fff; //标签背景色
+@tag-default-color: #1f2127;
+
+//table
+@table-bg: #fff; //表格背景色
+@table-header-bg: #fff; //表头背景色
+@table-body-sort-bg: #fff; //排序背景色
+@table-selected-row-bg: #cce4ff; //选中背景色
+@table-expanded-row-bg: #fff; //扩展背景色
+@table-footer-bg: #fff; //表尾背景色
+@table-header-sort-active-bg: #fff; //表头排序Active色
+@table-header-filter-active-bg: #cce4ff; //表头排序Active色
+@table-row-hover-bg: #cce4ff; //列hover色
+@table-body-selected-sort-bg: #cce4ff;
+
+@collapse-header-bg: #fff; //折叠面板头部背景色
+
+// tooltips
+@tooltip-bg: #fff; //文字提示框背景色
+@tooltip-color: @text-color;
+
+// checkbox
+@checkbox-check-bg: #cce4ff; //checkbox背景色
+
+//progress
+@processing-default-color: #6b7ee1; // 进度条颜色
+
+@Skeleton-color: #5a5d69; //骨架屏颜色
+
+// Rate
+@rate-star-color: @primary-color;
+@rate-star-bg: @component-background;
+
+// // Alert
+@alert-success-bg-color: #00c653;
+@alert-success-border-color: #00c653;
+@alert-success-icon-color: #fff;
+@alert-info-border-color: #0a7aff;
+@alert-info-bg-color: #0a7aff;
+@alert-info-icon-color: #fff;
+@alert-warning-border-color: #f9a214;
+@alert-warning-bg-color: #f9a214;
+@alert-warning-icon-color: #fff;
+@alert-error-border-color: #ff5c5a;
+@alert-error-bg-color: #ff5c5a;
+@alert-error-icon-color: #fff;
+
+// TimePicker
+@picker-time-panel-column-width: 70px;
+@picker-time-panel-column-height: 242px;
+@picker-time-panel-cell-height: 30px;
+@picker-panel-cell-height: 30px;
+@picker-panel-cell-width: 32px;
+@picker-text-height: 40px;
+@picker-panel-without-time-cell-height: 66px;
+
+// Cascader
+@cascader-item-selected-bg: #cce4ff;
+@cascader-dropdown-vertical-padding: 7px;
+@cascader-dropdown-line-height: 22px;
+
+// Menu
+@menu-inline-toplevel-item-height: 26px;
+@menu-item-height: 26px;
+@menu-item-group-height: @line-height-base;
+@menu-collapsed-width: 76px;
+@menu-item-active-border-width: 1px;
+@menu-item-vertical-margin: 4px;
+@menu-item-boundary-margin: 8px;
+@menu-item-padding: 0 10px;
+@menu-horizontal-line-height: 26px;
+//Dropdown
+@dropdown-vertical-padding: 7px;
+// Layout
+@layout-header-height: 48px;
+@layout-header-padding: 0 15px;
+@layout-footer-padding: 0 15px;
+@layout-trigger-height: 48px;
+@layout-zero-trigger-width: 30px;
+@layout-zero-trigger-height: 30px;
+// Avatar
+@avatar-size-base: 30px;
+@avatar-font-size-base: 18px;
+
+// Badge
+@badge-height: 16px;
+@badge-font-size: 12px;
+
+// Tooltip
+@tooltip-max-width: 360px;
+@tooltip-arrow-width: 8px;
+// Message
+@message-notice-content-padding: 10px 15px;
+// Spin
+@spin-dot-size-sm: 30px;
+@spin-dot-size: 35px;
+@spin-dot-size-lg: 50px;
+// Tag
+@tag-font-size: 14px;
+@tag-line-height: 22px;
+
+// Progress
+@progress-remaining-color: #161a1d;
+@progress-radius: 100px;
+@progress-text-font-size: 14px;
+@progress-circle-text-font-size: 14px;
+// Slider
+@slider-margin: 10px 6px 10px;
+// Transfer
+@transfer-header-height: 36px;
+@transfer-item-height: 36px;
+@transfer-disabled-bg: @disabled-bg;
+@transfer-list-height: 432px;
+@transfer-item-hover-bg: @item-hover-bg;
+@transfer-item-padding-vertical: 6px;
+@transfer-list-search-icon-top: 12px;
