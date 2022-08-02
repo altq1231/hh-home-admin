@@ -23,50 +23,14 @@ const routes = [
         },
         component: () => import("/@/views/test.vue"),
       },
-      {
-        path: "/test1",
-        name: "Test1",
-        meta: {
-          hideHeader: true,
-          title: "Test1",
-        },
-        component: () => import("/@/views/test1.vue"),
-      },
-      {
-        path: "/shop",
-        name: "shop",
-        meta: {
-          hideHeader: true,
-          title: "商城",
-        },
-        component: () => import("/@/views/shop/index.vue"),
-      },
-      {
-        path: "/music",
-        name: "music",
-        meta: {
-          hideHeader: true,
-          title: "音乐室",
-        },
-        component: () => import("/@/views/music/index.vue"),
-      },
-      {
-        path: "/video",
-        name: "video",
-        meta: {
-          hideHeader: true,
-          title: "放映室",
-        },
-        component: () => import("/@/views/video/index.vue"),
-      },
     ],
   },
-  // {
-  //   path: "/login",
-  //   name: "Login",
-  //   meta: { title: "登录" },
-  //   component: () => import("/@/views/login-register.vue"),
-  // },
+  {
+    path: "/login",
+    name: "Login",
+    meta: { title: "登录" },
+    component: () => import("/@/views/login-register.vue"),
+  },
   {
     path: "/:catchAll(.*)",
     name: "404",

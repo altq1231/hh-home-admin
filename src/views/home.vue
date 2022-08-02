@@ -1,15 +1,7 @@
 <template>
   <div class="home-page container-wrapper">
     <Head></Head>
-    <div class="banner-container">
-      <video
-        class="banner"
-        autoplay
-        muted
-        loop
-        src="../assets/video/2133262552.mp4"
-      ></video>
-    </div>
+    home
   </div>
 </template>
 
