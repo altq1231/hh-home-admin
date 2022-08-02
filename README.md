@@ -1,4 +1,4 @@
-# HH Home
+# HH Home Admin
 
 hh-home 后台管理系统。
 
