@@ -5,8 +5,8 @@ export function getUserInfo() {
   return axios.get("/info");
 }
 
-export function getServerUserInfo() {
-  return axios.get("/getAllUserInfo");
+export function sendEmailCaptcha(params) {
+  return axios.post("/user/sendCaptcha", params);
 }
 
 export function EditUserInfo(params) {

@@ -36,32 +36,53 @@ span
                 :rules="rules"
                 @finish="onFinish"
                 @finishFailed="onFinishFailed"
+                @validate="handleValidate"
               >
                 <div class="form-content">
                   <template v-if="isCodeLogin">
-                    <a-form-item ref="name" name="mail">
-                      <div class="input-item">
-                        <a-input
-                          :class="{
-                            'form-input': true,
-                            'has-value': formState.mail.length > 0,
-                          }"
-                          v-model:value="formState.mail"
-                        />
-                        <span class="input-label">邮箱地址</span>
+                    <a-form-item ref="name" name="email">
+                      <div class="input-group flex-row">
+                        <div class="input-item fill-flex">
+                          <a-input
+                            :class="{
+                              'form-input': true,
+                              'has-value': formState.email.length > 0,
+                            }"
+                            v-model:value="formState.email"
+                          />
+                          <span class="input-label">邮箱地址</span>
+                        </div>
+                        <a-button
+                          class="code-btn"
+                          type="primary"
+                          @click="handleSendCaptcha"
+                          :disabled="
+                            isSendCode ||
+                            formState.email.length <= 0 ||
+                            isTrueEmail
+                          "
+                          :loading="isSending"
+                        >
+                          {{
+                            isSending
+                              ? "正在发送..."
+                              : isSendCode
+                              ? resendTime + " s 后重新发送"
+                              : "发送验证码"
+                          }}
+                        </a-button>
                       </div>
                     </a-form-item>
                     <a-form-item name="code">
                       <div class="input-item">
                         <a-input
                           :class="{
-                            'form-input code-input': true,
+                            'form-input': true,
                             'has-value': formState.code.length > 0,
                           }"
                           v-model:value="formState.code"
                         />
                         <span class="input-label">请输入验证码</span>
-                        <div class="send-again">重新发送</div>
                       </div>
                     </a-form-item>
                   </template>
@@ -113,7 +134,7 @@ span
                     <router-link class="forget" to="/forget-password"
                       >忘记密码?</router-link
                     >
-                    <div class="code-login" @click="isCodeLogin = !isCodeLogin">
+                    <div class="code-login" @click="handleLoginType">
                       {{ isCodeLogin ? "账号登录" : "验证码登录" }}
                     </div>
                   </div>
@@ -186,11 +207,11 @@ span
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, toRaw, computed } from "vue";
+import { reactive, ref, toRaw, computed, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import type { Rule } from "ant-design-vue/es/form";
 // @ts-ignore
-import { login, register, getUserInfo } from "/@/service/user";
+import { login, sendEmailCaptcha, register } from "/@/service/user";
 import { message } from "ant-design-vue";
 import {
   MenuOutlined,
@@ -205,7 +226,7 @@ import { storeToRefs } from "pinia";
 interface FormState {
   userName: string;
   userPwd: string;
-  mail: string;
+  email: string;
   code: string;
 }
 
@@ -214,13 +235,43 @@ const formRef = ref();
 const showPassword = ref(false);
 const isCodeLogin = ref(false);
 const activeKey = ref("1");
+const isSendCode = ref(false);
+const isSending = ref(false);
+const isTrueEmail = ref(true);
+const resendTime = ref(60);
+let timer: any = null;
 
 const formState = reactive<FormState>({
   userName: "",
   userPwd: "",
-  mail: "",
+  email: "",
   code: "",
 });
+
+const handleSendCaptcha = async () => {
+  isSending.value = true;
+  isSendCode.value = true;
+  const response = await sendEmailCaptcha({ email: formState.email });
+  // @ts-ignore
+  if (response?.state) {
+    // @ts-ignore
+    message.success(response.msg);
+    isSending.value = false;
+    timer = setInterval(() => {
+      if (resendTime.value === 0) {
+        isSendCode.value = false;
+        clearInterval(timer);
+      } else {
+        resendTime.value--;
+      }
+    }, 1000);
+  } else {
+    isSendCode.value = false;
+    isSending.value = false;
+    // @ts-ignore
+    message.error(response.msg);
+  }
+};
 
 const checkMail = async (_rule: Rule, value: string) => {
   if (!value) {
@@ -240,56 +291,38 @@ const checkMail = async (_rule: Rule, value: string) => {
 const rules = {
   userName: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   userPwd: [{ required: true, message: "请输入密码", trigger: "blur" }],
-  mail: [
+  email: [
     { validator: checkMail, trigger: "change" },
     { validator: checkMail, trigger: "blur" },
   ],
   code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
 };
 
-const onSubmit = () => {
-  formRef.value
-    .validate()
-    .then(async () => {
-      const formData = toRaw(formState);
-      const response = await login({
-        userName: formData.userName,
-        userPwd: formData.userPwd,
-      });
-      console.log("server res", response);
-      if (response.state) {
-        message.success(`欢迎你 ${response.data.userName}`);
-        sessionStorage.setItem("jwt", formData.userName);
-        router.push({
-          //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
-          path: "/",
-        });
-      } else {
-        message.error(response.msg);
-      }
-    })
-    .catch((error: any) => {
-      console.log("server error", error);
-    });
-};
-
 const onFinish = async (values: any) => {
-  console.log("Success:", values);
+  // console.log("Success:", values);
 
-  const response = await login({
-    userName: values.userName,
-    userPwd: values.userPwd,
-  });
-  console.log("server res", response);
-  if (response.state) {
-    message.success(`欢迎你 ${response.data.userName}`);
-    sessionStorage.setItem("jwt", values.userName);
-    router.push({
-      //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
-      path: "/",
-    });
+  if (isCodeLogin.value) {
+    console.log(isCodeLogin.value, values);
   } else {
-    message.error(response.msg);
+    console.log(isCodeLogin.value, values);
+
+    const response = await login({
+      userName: values.userName,
+      userPwd: values.userPwd,
+    });
+    console.log("server res", response);
+    // @ts-ignore
+    if (response?.state) {
+      message.success(`欢迎你 ${response.data.userName}`);
+      sessionStorage.setItem("jwt", values.userName);
+      router.push({
+        //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+        path: "/",
+      });
+    } else {
+      // @ts-ignore
+      message.error(response.msg);
+    }
   }
 };
 const onFinishFailed = (errorInfo: any) => {
@@ -301,7 +334,25 @@ const resetForm = () => {
 };
 
 const disabled = computed(() => {
-  return !(formState.userName && formState.userPwd);
+  return !(
+    (formState.userName && formState.userPwd) ||
+    (formState.email && formState.code)
+  );
+});
+
+const handleValidate = (name: any, status: any) => {
+  // console.log(name, status, errorMsgs);
+  if (name === "email") {
+    isTrueEmail.value = !status;
+  }
+};
+
+const handleLoginType = () => {
+  isCodeLogin.value = !isCodeLogin.value;
+};
+
+onBeforeUnmount(() => {
+  clearInterval(timer);
 });
 </script>
 <style scoped lang="less">
@@ -450,9 +501,6 @@ const disabled = computed(() => {
             .form-input.ant-input.password-input {
               padding-right: 60px;
             }
-            .form-input.ant-input.code-input {
-              padding-right: 120px;
-            }
             .password-icon {
               position: absolute;
               right: 0;
@@ -471,26 +519,6 @@ const disabled = computed(() => {
                 color: rgba(0, 0, 0, 0.45);
               }
             }
-
-            .send-again {
-              position: absolute;
-              right: 0;
-              top: 0;
-              height: 60px;
-              width: 120px;
-              display: flex;
-              align-items: center;
-              justify-content: flex-end;
-              padding-right: 20px;
-              font-size: 16px;
-              color: rgba(0, 0, 0, 0.25);
-              cursor: pointer;
-              user-select: none;
-
-              &:hover {
-                color: rgba(0, 0, 0, 0.45);
-              }
-            }
           }
 
           .login-btn {
@@ -499,7 +527,7 @@ const disabled = computed(() => {
             margin-bottom: 15px;
             width: 100%;
             font-size: 20px;
-            line-height: 58px;
+            line-height: 50px;
 
             &:disabled {
               color: #ffffff;

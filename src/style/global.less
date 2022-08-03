@@ -156,7 +156,33 @@ body,
 }
 
 /*--------------------------- input --------------------------*/
+.input-group {
+  .input-item {
+    overflow: hidden;
 
+    .form-input.ant-input {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  .code-btn.ant-btn {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    height: 60px;
+    line-height: 50px;
+
+    &:disabled,
+    &:disabled:hover,
+    &:disabled:active,
+    &:disabled:focus {
+      color: #ffffff;
+      background-color: #6aadfd;
+      border-color: #6aadfd;
+      cursor: not-allowed;
+    }
+  }
+}
 .input-item {
   position: relative;
 
