@@ -3,7 +3,7 @@ import { message } from "ant-design-vue";
 
 // create an axios instance
 const service = axios.create({
-  // baseURL: process.env.NODE_ENV === "production" ? `/pro` : "/api",
+  baseURL: process.env.NODE_ENV === "production" ? `/pro` : "/api",
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
 });

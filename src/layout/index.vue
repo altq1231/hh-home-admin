@@ -7,20 +7,6 @@
         </transition>
       </router-view>
     </div>
-    <a-button @click="drawerVisible = !drawerVisible" class="route-link">
-      <template #icon><setting-two-tone two-tone-color="#0a7aff" /></template>
-    </a-button>
-    <a-drawer
-      v-model:visible="drawerVisible"
-      class="custom-class"
-      title="Config"
-      placement="right"
-    >
-      <a-space>
-        <router-link to="/">home</router-link>
-        <router-link to="/test">test</router-link>
-      </a-space>
-    </a-drawer>
   </div>
 </template>
 
@@ -29,7 +15,6 @@ import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { SettingTwoTone } from "@ant-design/icons-vue";
 
-const drawerVisible = ref(false);
 //router是全局路由对象，route= userRoute()是当前路由对象
 let router = useRouter();
 
@@ -67,12 +52,6 @@ router.beforeEach((to, from) => {
 </script>
 
 <style lang="less" scoped>
-.route-link {
-  position: fixed;
-  top: 60px;
-  right: 2px;
-  z-index: 500;
-}
 .basic-layout {
   width: 100%;
   height: 100%;

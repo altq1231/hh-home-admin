@@ -32,6 +32,12 @@ const routes = [
     component: () => import("/@/views/login-register.vue"),
   },
   {
+    path: "/forget-password",
+    name: "ForgetPassword",
+    meta: { title: "忘记密码" },
+    component: () => import("/@/views/forget-password.vue"),
+  },
+  {
     path: "/:catchAll(.*)",
     name: "404",
     meta: { title: "404" },
@@ -57,10 +63,10 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title;
 
   // console.log(2222, to.path);
-  if (to.path === "/login" || to.path === "/num-scroll") {
+  if (to.path === "/login" || to.path === "/forget-password") {
     // console.log(2222, !!jwt);
 
-    !!jwt ? next("/") : next();
+    next();
   } else {
     if (from.path === "/login" && !jwt) {
       NProgress.done(true);

@@ -154,3 +154,39 @@ body,
   width: 1226px;
   margin: 0 auto;
 }
+
+/*--------------------------- input --------------------------*/
+
+.input-item {
+  position: relative;
+
+  .form-input.ant-input {
+    height: 60px;
+    padding: 30px 20px 10px;
+    font-size: 16px;
+    line-height: 20px;
+    color: @text-color;
+    letter-spacing: 2px;
+
+    &:focus,
+    &:active,
+    &.has-value {
+      & + .input-label {
+        top: 6px;
+        font-size: 12px;
+        color: #aaa;
+      }
+    }
+  }
+
+  .input-label {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    height: 20px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.4);
+    line-height: 20px;
+    transition: all 0.3s;
+  }
+}
