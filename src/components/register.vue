@@ -302,7 +302,8 @@ const onRegisterFinish = async (values: any) => {
       // console.log(response);
 
       message.success(`欢迎你 ${response.data.userName}`);
-      sessionStorage.setItem("jwt", response.data.userName);
+      sessionStorage.setItem("username", response.data.userName);
+      sessionStorage.setItem("_id", response.data._id);
       router.push({
         //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
         path: "/",
@@ -322,7 +323,8 @@ const onRegisterFinish = async (values: any) => {
     // @ts-ignore
     if (response?.state) {
       message.success(`欢迎你 ${response.data.userName}`);
-      sessionStorage.setItem("jwt", values.reUserName);
+      sessionStorage.setItem("username", response.data.userName);
+      sessionStorage.setItem("_id", response.data._id);
       router.push({
         //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
         path: "/",

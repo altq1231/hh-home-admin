@@ -50,10 +50,13 @@ const router = createRouter({
   routes,
 });
 
+const whiteList = ["/login", "/forget-password"];
+console.log(whiteList.includes("/test"));
+
 router.beforeEach((to, from, next) => {
   NProgress.start();
   // to and from are both route objects. must call `next`.
-  const jwt = sessionStorage.getItem("jwt") || "";
+  const jwt = sessionStorage.getItem("username");
 
   document.title = jwt
     ? to.meta.title
@@ -63,7 +66,7 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title;
 
   // console.log(2222, to.path);
-  if (to.path === "/login" || to.path === "/forget-password") {
+  if (whiteList.includes(to.path)) {
     // console.log(2222, !!jwt);
 
     next();

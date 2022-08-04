@@ -329,7 +329,8 @@ const onFinish = async (values: any) => {
         // @ts-ignore
         improveData._id = captchaRes.data._id;
       } else {
-        sessionStorage.setItem("jwt", values.userName);
+        sessionStorage.setItem("username", captchaRes.data.userName);
+        sessionStorage.setItem("_id", captchaRes.data._id);
         message.success(`欢迎你 ${captchaRes.data.userName}`);
         router.push({
           //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
@@ -347,11 +348,12 @@ const onFinish = async (values: any) => {
       userName: values.userName,
       userPwd: values.userPwd,
     });
-    // console.log("server res", response);
+    console.log("server res", response);
     // @ts-ignore
     if (response?.state) {
+      sessionStorage.setItem("username", response.data.userName);
+      sessionStorage.setItem("_id", response.data._id);
       message.success(`欢迎你 ${response.data.userName}`);
-      sessionStorage.setItem("jwt", values.userName);
       router.push({
         path: "/",
       });
