@@ -7,7 +7,7 @@
     }"
   >
     <menu-unfold-outlined
-      v-if="collapsed"
+      v-if="isCollapsed"
       class="trigger"
       @click="handleCollapseClick"
     />
