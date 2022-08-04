@@ -69,11 +69,13 @@
                 'form-input': true,
                 'has-value': registerFormState.reEmail.length > 0,
               }"
+              :readonly="props.isImproveInfo"
               v-model:value="registerFormState.reEmail"
             />
             <span class="input-label">邮箱地址</span>
           </div>
           <a-button
+            v-if="!props.isImproveInfo"
             class="code-btn"
             type="primary"
             @click="handleSendCaptcha"
@@ -94,7 +96,7 @@
           </a-button>
         </div>
       </a-form-item>
-      <a-form-item name="reCode">
+      <a-form-item name="reCode" v-if="!props.isImproveInfo">
         <div class="input-item">
           <a-input
             :class="{
@@ -113,7 +115,7 @@
         type="primary"
         class="login-btn"
       >
-        注册
+        {{ props.isImproveInfo ? "提交" : "注册" }}
       </a-button>
     </div>
   </a-form>
@@ -123,9 +125,20 @@ import { reactive, ref, computed, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import type { Rule } from "ant-design-vue/es/form";
 // @ts-ignore
-import { sendEmailCaptcha, register } from "/@/service/user";
+import { sendEmailCaptcha, register, improveUserInfo } from "/@/service/user";
 import { message } from "ant-design-vue";
 import { EyeInvisibleFilled, EyeFilled } from "@ant-design/icons-vue";
+
+const props = defineProps({
+  isImproveInfo: {
+    type: Boolean,
+    default: "",
+  },
+  improveData: {
+    type: Object,
+    default: "",
+  },
+});
 
 interface RegisterFormState {
   reUserName: string;
@@ -150,7 +163,7 @@ const registerFormState = reactive<RegisterFormState>({
   reUserPwd: "",
   confirmPwd: "",
   reUserDesc: "",
-  reEmail: "",
+  reEmail: props.isImproveInfo ? props.improveData.email : "",
   reCode: "",
 });
 
@@ -210,13 +223,43 @@ const checkUserName = async (_rule: Rule, value: string) => {
   }
 };
 
+const checkConfirmPwd = async (_rule: Rule, value: string) => {
+  if (!value) {
+    return Promise.reject("请输入确认密码");
+  }
+
+  if (value != registerFormState.reUserPwd) {
+    return Promise.reject("两次密码不一样");
+  } else {
+    return Promise.resolve();
+  }
+};
+
+const checkUserPwd = async (_rule: Rule, value: string) => {
+  if (!value) {
+    return Promise.reject("请输入密码");
+  }
+
+  if (value.length < 6) {
+    return Promise.reject("密码长度不能小于6");
+  } else {
+    return Promise.resolve();
+  }
+};
+
 const registerRules = {
   reUserName: [
     { validator: checkUserName, trigger: "change" },
     { validator: checkUserName, trigger: "blur" },
   ],
-  reUserPwd: [{ required: true, message: "请输入密码", trigger: "blur" }],
-  confirmPwd: [{ required: true, message: "请输入确认密码", trigger: "blur" }],
+  reUserPwd: [
+    { validator: checkUserPwd, trigger: "change" },
+    { validator: checkUserPwd, trigger: "blur" },
+  ],
+  confirmPwd: [
+    { validator: checkConfirmPwd, trigger: "change" },
+    { validator: checkConfirmPwd, trigger: "blur" },
+  ],
   reEmail: [
     { validator: checkMail, trigger: "change" },
     { validator: checkMail, trigger: "blur" },
@@ -225,18 +268,75 @@ const registerRules = {
 };
 
 const disabled = computed(() => {
-  return !(
+  let temp = !(
     registerFormState.reUserName &&
     registerFormState.reUserPwd &&
     registerFormState.confirmPwd &&
     registerFormState.reEmail &&
     registerFormState.reCode
   );
+  if (props.isImproveInfo) {
+    temp = !(
+      registerFormState.reUserName &&
+      registerFormState.reUserPwd &&
+      registerFormState.confirmPwd &&
+      registerFormState.reEmail
+    );
+  }
+  return temp;
 });
 
-const onRegisterFinish = () => {};
+const onRegisterFinish = async (values: any) => {
+  // console.log(values);
 
-const onRegisterFinishFailed = () => {};
+  if (props.isImproveInfo) {
+    const response = await improveUserInfo({
+      userName: values.reUserName,
+      userPwd: values.reUserPwd,
+      email: values.reEmail,
+      _id: props.improveData._id,
+    });
+    // console.log("server res", response);
+    // @ts-ignore
+    if (response?.state) {
+      // console.log(response);
+
+      message.success(`欢迎你 ${response.data.userName}`);
+      sessionStorage.setItem("jwt", response.data.userName);
+      router.push({
+        //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+        path: "/",
+      });
+    } else {
+      // @ts-ignore
+      message.error(response.msg);
+    }
+  } else {
+    const response = await register({
+      userName: values.reUserName,
+      userPwd: values.reUserPwd,
+      email: values.reEmail,
+      code: values.reCode,
+    });
+    // console.log("server res", response);
+    // @ts-ignore
+    if (response?.state) {
+      message.success(`欢迎你 ${response.data.userName}`);
+      sessionStorage.setItem("jwt", values.reUserName);
+      router.push({
+        //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+        path: "/",
+      });
+    } else {
+      // @ts-ignore
+      message.error(response.msg);
+    }
+  }
+};
+
+const onRegisterFinishFailed = (errorInfo: any) => {
+  console.log("Failed:", errorInfo);
+};
 
 const handleRegisterValidate = (name: any, status: any) => {
   // console.log(name, status);

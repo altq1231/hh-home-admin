@@ -16,6 +16,16 @@ export function sendEmailCaptcha(params) {
   return axios.post("/user/sendCaptcha", params);
 }
 
+// 注册
+export function register(params) {
+  return axios.post("/user/register", params);
+}
+
+// 第一次登录完善信息
+export function improveUserInfo(params) {
+  return axios.post("/user/improveUserInfo", params);
+}
+
 export function getUserInfo() {
   return axios.get("/info");
 }
@@ -25,8 +35,4 @@ export function EditUserInfo(params) {
 
 export function logout() {
   return axios.post("/logout");
-}
-
-export function register(params) {
-  return axios.post("/register", params);
 }

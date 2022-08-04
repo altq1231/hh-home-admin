@@ -195,7 +195,12 @@ span
                 </div>
               </a-form>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="注册"> <register></register> </a-tab-pane>
+            <a-tab-pane key="2" tab="注册">
+              <register
+                :isImproveInfo="true"
+                :improveData="improveData"
+              ></register>
+            </a-tab-pane>
           </a-tabs>
         </div>
       </div>
@@ -223,7 +228,7 @@ import {
 } from "@ant-design/icons-vue";
 import { storeToRefs } from "pinia";
 // @ts-ignore
-import Register from "./register.vue";
+import Register from "/@/components/register.vue";
 
 interface FormState {
   userName: string;
@@ -242,6 +247,8 @@ const isSending = ref(false);
 const isTrueEmail = ref(false);
 const resendTime = ref(60);
 let timer: any = null;
+
+const improveData = reactive({ email: "", _id: "" });
 
 const formState = reactive<FormState>({
   userName: "",
@@ -305,17 +312,22 @@ const onFinish = async (values: any) => {
   // console.log("Success:", values);
 
   if (isCodeLogin.value) {
-    console.log(isCodeLogin.value, values);
+    // console.log(isCodeLogin.value, values);
     const captchaRes = await captchaLogin({
       email: values.email,
       code: values.code,
     });
     // @ts-ignore
     if (captchaRes.state) {
-      console.log(111111, captchaRes);
+      // console.log(111111, captchaRes);
 
       if (captchaRes.data.isNewUser) {
         activeKey.value = "2";
+        // @ts-ignore
+        message.success(captchaRes.msg + ", 请先完善您的信息");
+        improveData.email = values.email;
+        // @ts-ignore
+        improveData._id = captchaRes.data._id;
       } else {
         sessionStorage.setItem("jwt", values.userName);
         message.success(`欢迎你 ${captchaRes.data.userName}`);
@@ -324,11 +336,6 @@ const onFinish = async (values: any) => {
           path: "/",
         });
       }
-      // sessionStorage.setItem("jwt", values.userName);
-      // router.push({
-      //   //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
-      //   path: "/",
-      // });
     } else {
       // @ts-ignore
       message.error(captchaRes.msg);
@@ -340,13 +347,12 @@ const onFinish = async (values: any) => {
       userName: values.userName,
       userPwd: values.userPwd,
     });
-    console.log("server res", response);
+    // console.log("server res", response);
     // @ts-ignore
     if (response?.state) {
       message.success(`欢迎你 ${response.data.userName}`);
       sessionStorage.setItem("jwt", values.userName);
       router.push({
-        //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
         path: "/",
       });
     } else {
