@@ -211,7 +211,12 @@ import { reactive, ref, toRaw, computed, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import type { Rule } from "ant-design-vue/es/form";
 // @ts-ignore
-import { login, sendEmailCaptcha, register } from "/@/service/user";
+import {
+  login,
+  sendEmailCaptcha,
+  captchaLogin,
+  register,
+} from "/@/service/user";
 import { message } from "ant-design-vue";
 import {
   MenuOutlined,
@@ -260,6 +265,7 @@ const handleSendCaptcha = async () => {
     timer = setInterval(() => {
       if (resendTime.value === 0) {
         isSendCode.value = false;
+        resendTime.value = 60;
         clearInterval(timer);
       } else {
         resendTime.value--;
@@ -303,6 +309,22 @@ const onFinish = async (values: any) => {
 
   if (isCodeLogin.value) {
     console.log(isCodeLogin.value, values);
+    const response = await captchaLogin({
+      email: values.email,
+      code: values.code,
+    });
+    // @ts-ignore
+    if (response?.state) {
+      message.success(`欢迎你 ${response.data.userName}`);
+      // sessionStorage.setItem("jwt", values.userName);
+      // router.push({
+      //   //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+      //   path: "/",
+      // });
+    } else {
+      // @ts-ignore
+      message.error(response.msg);
+    }
   } else {
     console.log(isCodeLogin.value, values);
 
