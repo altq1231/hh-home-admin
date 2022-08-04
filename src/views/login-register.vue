@@ -204,9 +204,7 @@ span
           </a-tabs>
         </div>
       </div>
-      <div class="foot-copyright">
-        版权所有-沪ICP备000000000-沪公网安备XXXXXXXXXXX号-沪ICP证XXXXXX号
-      </div>
+      <div class="foot-copyright">hh home ©2022 Created by Altq</div>
     </div>
   </div>
 </template>
