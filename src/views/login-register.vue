@@ -40,7 +40,7 @@ span
               >
                 <div class="form-content">
                   <template v-if="isCodeLogin">
-                    <a-form-item ref="name" name="email">
+                    <a-form-item name="email">
                       <div class="input-group flex-row">
                         <div class="input-item fill-flex">
                           <a-input
@@ -87,7 +87,7 @@ span
                     </a-form-item>
                   </template>
                   <template v-else>
-                    <a-form-item ref="name" name="userName">
+                    <a-form-item name="userName">
                       <div class="input-item">
                         <a-input
                           :class="{
@@ -195,7 +195,7 @@ span
                 </div>
               </a-form>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="注册">Continue...</a-tab-pane>
+            <a-tab-pane key="2" tab="注册"> <register></register> </a-tab-pane>
           </a-tabs>
         </div>
       </div>
@@ -211,12 +211,7 @@ import { reactive, ref, toRaw, computed, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import type { Rule } from "ant-design-vue/es/form";
 // @ts-ignore
-import {
-  login,
-  sendEmailCaptcha,
-  captchaLogin,
-  register,
-} from "/@/service/user";
+import { login, sendEmailCaptcha, captchaLogin } from "/@/service/user";
 import { message } from "ant-design-vue";
 import {
   MenuOutlined,
@@ -227,6 +222,8 @@ import {
   EyeFilled,
 } from "@ant-design/icons-vue";
 import { storeToRefs } from "pinia";
+// @ts-ignore
+import Register from "./register.vue";
 
 interface FormState {
   userName: string;
@@ -242,7 +239,7 @@ const isCodeLogin = ref(false);
 const activeKey = ref("1");
 const isSendCode = ref(false);
 const isSending = ref(false);
-const isTrueEmail = ref(true);
+const isTrueEmail = ref(false);
 const resendTime = ref(60);
 let timer: any = null;
 
@@ -309,13 +306,24 @@ const onFinish = async (values: any) => {
 
   if (isCodeLogin.value) {
     console.log(isCodeLogin.value, values);
-    const response = await captchaLogin({
+    const captchaRes = await captchaLogin({
       email: values.email,
       code: values.code,
     });
     // @ts-ignore
-    if (response?.state) {
-      message.success(`欢迎你 ${response.data.userName}`);
+    if (captchaRes.state) {
+      console.log(111111, captchaRes);
+
+      if (captchaRes.data.isNewUser) {
+        activeKey.value = "2";
+      } else {
+        sessionStorage.setItem("jwt", values.userName);
+        message.success(`欢迎你 ${captchaRes.data.userName}`);
+        router.push({
+          //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+          path: "/",
+        });
+      }
       // sessionStorage.setItem("jwt", values.userName);
       // router.push({
       //   //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
@@ -323,10 +331,10 @@ const onFinish = async (values: any) => {
       // });
     } else {
       // @ts-ignore
-      message.error(response.msg);
+      message.error(captchaRes.msg);
     }
   } else {
-    console.log(isCodeLogin.value, values);
+    // console.log(isCodeLogin.value, values);
 
     const response = await login({
       userName: values.userName,
