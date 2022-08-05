@@ -2,8 +2,8 @@
   <a-layout-header
     class="fixed-header flex-col"
     :style="{
-      left: isCollapsed ? '60px' : '200px',
-      width: isCollapsed ? 'calc(100% - 60px)' : 'calc(100% - 200px)',
+      left: isCollapsed ? '60px' : '210px',
+      width: isCollapsed ? 'calc(100% - 60px)' : 'calc(100% - 210px)',
     }"
   >
     <div class="top-navbar flex-row">
@@ -81,7 +81,7 @@ const props = defineProps({
 const isCollapsed = ref(props.collapsed);
 const language = ref(1);
 
-const userList = ["U", "Lucy", "Tom", "Edward"];
+const userList = ["Tom", "Uni", "Lucy", "Edward"];
 const colorList = ["#f56a00", "#7265e6", "#ffbf00", "#00a2ae"];
 const avatarValue = ref(userList[0]);
 const color = ref(colorList[0]);
@@ -118,10 +118,10 @@ const logout = () => {
 <style lang="less" scoped>
 .fixed-header.ant-layout-header {
   position: fixed;
-  left: 200px;
+  left: 210px;
   right: 0;
   top: 0;
-  height: 90px;
+  height: 86px;
   width: calc(100% - 200px);
   background-color: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -132,16 +132,18 @@ const logout = () => {
     flex: 0 0 50px;
     height: 50px;
     box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-    padding: 0 15px;
     align-items: center;
 
     .trigger {
+      height: 100%;
+      flex: 0 0 40px;
+      padding: 15px 10px;
       font-size: 20px;
       color: rgba(0, 0, 0, 0.45);
-      transition: color 0.3s;
+      transition: background-color 0.3s;
 
       &:hover {
-        color: rgba(0, 0, 0, 0.85);
+        background-color: #f4f4f4;
       }
     }
 
@@ -162,13 +164,14 @@ const logout = () => {
         font-size: 20px;
         color: #999999;
         margin-right: 10px;
+        transition: background-color 0.3s;
 
         &:hover {
-          color: @primary-color;
+          background-color: #f4f4f4;
         }
 
         &.ant-dropdown-open {
-          color: @primary-color;
+          background-color: #f4f4f4;
         }
       }
 
@@ -180,11 +183,11 @@ const logout = () => {
         transition: all 0.3s;
 
         &:hover {
-          background-color: #f6f6f6;
+          background-color: #f4f4f4;
         }
 
         &.ant-dropdown-open {
-          background-color: #f6f6f6;
+          background-color: #f4f4f4;
         }
 
         .avatar {
@@ -204,6 +207,11 @@ const logout = () => {
         }
       }
     }
+  }
+
+  .tags-view-container {
+    flex: 0 0 36px;
+    height: 36px;
   }
 }
 </style>

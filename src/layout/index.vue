@@ -5,27 +5,36 @@
       v-model:collapsed="collapsed"
       :trigger="null"
       collapsible
+      :width="210"
       :collapsedWidth="60"
     >
       <Logo :collapse="collapsed"></Logo>
-      <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+      <a-menu
+        class="side-menu"
+        v-model:selectedKeys="selectedKeys"
+        mode="inline"
+      >
         <a-menu-item key="1">
-          <user-outlined />
-          <span>nav 1</span>
+          <home-outlined />
+          <span> 首页 </span>
         </a-menu-item>
         <a-menu-item key="2">
-          <video-camera-outlined />
-          <span>nav 2</span>
+          <shop-outlined />
+          <span>商城管理</span>
         </a-menu-item>
         <a-menu-item key="3">
-          <upload-outlined />
-          <span>nav 3</span>
+          <video-camera-outlined />
+          <span>视频管理</span>
+        </a-menu-item>
+        <a-menu-item key="4">
+          <customer-service-outlined />
+          <span>音乐管理</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout
       class="inner-layout"
-      :style="{ marginLeft: collapsed ? '60px' : '200px' }"
+      :style="{ marginLeft: collapsed ? '60px' : '210px' }"
     >
       <Head class="fixed-header" v-model:collapsed="collapsed"></Head>
       <a-layout-content class="bottom-main-container">
@@ -52,7 +61,9 @@ import Logo from "/@/components/logo.vue";
 import {
   UserOutlined,
   VideoCameraOutlined,
-  UploadOutlined,
+  CustomerServiceOutlined,
+  ShopOutlined,
+  HomeOutlined,
 } from "@ant-design/icons-vue";
 
 const collapsed = ref<boolean>(false);
@@ -104,20 +115,24 @@ router.beforeEach((to, from) => {
     top: 0;
     height: 100vh;
     overflow: auto;
+    background-color: #ffffff;
+
+    .side-menu {
+    }
   }
 
   .inner-layout {
-    margin-left: 200px;
+    margin-left: 210px;
     transition: margin-left 0.2s;
     flex: 1;
     min-height: calc(100vh - 80px);
 
     .bottom-main-container {
       background-color: #ffffff;
-      margin-top: 100px;
-      margin-left: 20px;
-      margin-right: 20px;
-      width: calc(100% - 40px);
+      margin-top: 101px;
+      margin-left: 15px;
+      margin-right: 15px;
+      width: calc(100% - 30px);
       transition: width 0.2s, margin 0.2s;
       overflow: hidden;
       min-height: calc(100vh - 100px);
