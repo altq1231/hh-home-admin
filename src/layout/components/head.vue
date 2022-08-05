@@ -124,14 +124,14 @@ const logout = () => {
   height: 86px;
   width: calc(100% - 200px);
   background-color: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e6e6e6;
   transition: width 0.2s, left 0.2s;
   padding: 0;
 
   .top-navbar {
     flex: 0 0 50px;
     height: 50px;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    border-bottom: 1px solid #e6e6e6;
     align-items: center;
 
     .trigger {

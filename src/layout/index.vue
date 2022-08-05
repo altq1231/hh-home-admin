@@ -55,9 +55,9 @@
 import { ref, reactive, watch } from "vue";
 import { useRouter } from "vue-router";
 // @ts-ignore
-import Head from "/@/components/head.vue";
+import Head from "./components/head.vue";
 // @ts-ignore
-import Logo from "/@/components/logo.vue";
+import Logo from "./components/logo.vue";
 import {
   UserOutlined,
   VideoCameraOutlined,

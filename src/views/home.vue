@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons-vue";
 import { storeToRefs } from "pinia";
 // @ts-ignore：无法被执行的代码的错误
-import Head from "/@/components/head.vue";
+import Head from "../layout/components/head.vue";
 
 const isBomb = reactive({ value: false });
 const title = ref("test  sa aa");

@@ -49,8 +49,7 @@ const props = defineProps({
   height: 50px;
   width: 100%;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  // background: rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid #e6e6e6;
 
   .logo-box {
     padding: 0 12px;
