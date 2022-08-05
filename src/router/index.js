@@ -51,7 +51,7 @@ const router = createRouter({
 });
 
 const whiteList = ["/login", "/forget-password"];
-console.log(whiteList.includes("/test"));
+// console.log(whiteList.includes("/test"));
 
 router.beforeEach((to, from, next) => {
   NProgress.start();

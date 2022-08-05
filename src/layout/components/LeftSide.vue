@@ -14,7 +14,6 @@
   </a-layout-sider>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
 // @ts-ignore
 import SideLogo from "./SideLogo.vue";
 // @ts-ignore
@@ -24,9 +23,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
-onMounted(() => {
-  console.log(props.collapsed);
 });
 </script>
 
