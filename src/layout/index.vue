@@ -1,37 +1,6 @@
 <template>
   <a-layout class="basic-layout">
-    <a-layout-sider
-      class="fixed-side"
-      v-model:collapsed="collapsed"
-      :trigger="null"
-      collapsible
-      :width="210"
-      :collapsedWidth="60"
-    >
-      <Logo :collapse="collapsed"></Logo>
-      <a-menu
-        class="side-menu"
-        v-model:selectedKeys="selectedKeys"
-        mode="inline"
-      >
-        <a-menu-item key="1">
-          <home-outlined />
-          <span> 首页 </span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <shop-outlined />
-          <span>商城管理</span>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <video-camera-outlined />
-          <span>视频管理</span>
-        </a-menu-item>
-        <a-menu-item key="4">
-          <customer-service-outlined />
-          <span>音乐管理</span>
-        </a-menu-item>
-      </a-menu>
-    </a-layout-sider>
+    <left-side :collapsed="collapsed"></left-side>
     <a-layout
       class="inner-layout"
       :style="{ marginLeft: collapsed ? '60px' : '210px' }"
@@ -57,17 +26,9 @@ import { useRouter } from "vue-router";
 // @ts-ignore
 import Head from "./components/head.vue";
 // @ts-ignore
-import Logo from "./components/logo.vue";
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  CustomerServiceOutlined,
-  ShopOutlined,
-  HomeOutlined,
-} from "@ant-design/icons-vue";
+import LeftSide from "./components/LeftSide.vue";
 
 const collapsed = ref<boolean>(false);
-const selectedKeys = ref<string[]>(["1"]);
 
 //router是全局路由对象，route= userRoute()是当前路由对象
 let router = useRouter();
@@ -108,18 +69,6 @@ router.beforeEach((to, from) => {
 <style lang="less" scoped>
 .basic-layout {
   width: 100%;
-
-  .fixed-side {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    overflow: auto;
-    background-color: #ffffff;
-
-    .side-menu {
-    }
-  }
 
   .inner-layout {
     margin-left: 210px;
