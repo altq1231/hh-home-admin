@@ -32,7 +32,8 @@
   </a-menu>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import {
   UserOutlined,
   VideoCameraOutlined,
@@ -41,10 +42,15 @@ import {
   HomeOutlined,
 } from "@ant-design/icons-vue";
 
+const router = useRouter();
 const selectedKeys = ref<string[]>(["/"]);
 
 const handleMenuClick = ({ key }: any) => {
-  console.log(key);
+  // console.log(key);
+  router.push({
+    //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+    path: key,
+  });
 };
 </script>
 <style lang="less" scoped></style>

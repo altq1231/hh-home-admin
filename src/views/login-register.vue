@@ -235,7 +235,7 @@ interface FormState {
   code: string;
 }
 
-let router = useRouter();
+const router = useRouter();
 const formRef = ref();
 const showPassword = ref(false);
 const isCodeLogin = ref(false);

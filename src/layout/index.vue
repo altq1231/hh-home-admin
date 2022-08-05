@@ -69,6 +69,9 @@ router.beforeEach((to, from) => {
 <style lang="less" scoped>
 .basic-layout {
   width: 100%;
+  &.ant-layout {
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+  }
 
   .inner-layout {
     margin-left: 210px;
