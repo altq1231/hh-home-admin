@@ -7,7 +7,7 @@
       collapsible
       :collapsedWidth="60"
     >
-      <div class="logo">logo</div>
+      <Logo :collapse="collapsed"></Logo>
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <a-menu-item key="1">
           <user-outlined />
@@ -27,7 +27,7 @@
       class="inner-layout"
       :style="{ marginLeft: collapsed ? '60px' : '200px' }"
     >
-      <Head class="fixed-header" @changeCollapse="handleCollapse"></Head>
+      <Head class="fixed-header" v-model:collapsed="collapsed"></Head>
       <a-layout-content class="bottom-main-container">
         <router-view v-slot="{ Component }">
           <transition name="fade-transform" mode="out-in">
@@ -43,10 +43,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import { useRouter } from "vue-router";
 // @ts-ignore
 import Head from "/@/components/head.vue";
+// @ts-ignore
+import Logo from "/@/components/logo.vue";
 import {
   UserOutlined,
   VideoCameraOutlined,
@@ -90,10 +92,6 @@ router.beforeEach((to, from) => {
   //   state.transitionName = ""; // 同级无过渡效果
   // }
 });
-const handleCollapse = (val: boolean) => {
-  console.log(val);
-  collapsed.value = val;
-};
 </script>
 
 <style lang="less" scoped>
