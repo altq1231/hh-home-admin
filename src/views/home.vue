@@ -45,15 +45,30 @@
       <div class="total-info flex-row">
         <div class="info-item flex-col">
           <p class="title">商品</p>
-          <div class="num"><span class="val goods-text">100</span> 件</div>
+          <div class="num flex-row">
+            <div class="val goods-text">
+              <NumScroll :num="num" :size="40" :font-size="20"></NumScroll>
+            </div>
+            件
+          </div>
         </div>
         <div class="info-item flex-col">
           <p class="title">视频</p>
-          <div class="num"><span class="val video-text">100</span> 条</div>
+          <div class="num flex-row">
+            <div class="val video-text">
+              <NumScroll :num="num" :size="40" :font-size="20"></NumScroll>
+            </div>
+            条
+          </div>
         </div>
         <div class="info-item flex-col">
           <p class="title">音乐</p>
-          <div class="num"><span class="val music-text">100</span> 首</div>
+          <div class="num flex-row">
+            <div class="val music-text">
+              <NumScroll :num="num" :size="40" :font-size="20"></NumScroll>
+            </div>
+            首
+          </div>
         </div>
       </div>
     </div>
@@ -100,6 +115,8 @@ import {
 } from "@ant-design/icons-vue";
 import { shallowRef } from "@vue/reactivity";
 import AMapLoader from "@amap/amap-jsapi-loader";
+// @ts-ignore
+import NumScroll from "/@/components/num-scroll.vue";
 
 interface WeatherInfo {
   date: string;
@@ -155,6 +172,8 @@ const timeHello = ref("早上好");
 const username = sessionStorage.getItem("username");
 const weatherInfo = ref([] as WeatherInfo[]);
 const developments = ref([] as DevelopmentsItem[]);
+
+const num = ref("0");
 
 const handleAbsoluteData = (aData: any) => {
   console.log(aData);
@@ -262,6 +281,10 @@ onMounted(async () => {
 
   weatherInfo.value = tempInfo.forecasts[0].casts;
   await initMap();
+
+  setTimeout(() => {
+    num.value = "100";
+  }, 1000);
 });
 </script>
 <style scoped lang="less">
@@ -362,15 +385,18 @@ onMounted(async () => {
         }
 
         .num {
-          align-items: center;
+          align-items: flex-end;
           justify-content: flex-end;
           font-size: 14px;
           color: #999999;
+          transition: all 0.3s;
 
           .val {
             font-size: 25px;
             font-weight: 700;
             color: #000;
+            transition: all 0.3s;
+            padding-right: 5px;
 
             &.goods-text {
               color: #fba414;
