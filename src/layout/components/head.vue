@@ -45,14 +45,13 @@
               :data-color="color"
             >
             </a-avatar>
-            <div class="name">{{ avatarValue }}</div>
+            <div class="name">{{ username }}</div>
             <caret-down-outlined class="down-icon" />
           </a>
           <template #overlay>
             <a-menu>
               <a-menu-item> 个人中心 </a-menu-item>
               <a-menu-item> 设置 </a-menu-item>
-              <a-menu-item @click="changeValue"> 随机名字 </a-menu-item>
               <a-menu-divider />
               <a-menu-item @click="logout"> 退出登录 </a-menu-item>
             </a-menu>
@@ -83,7 +82,7 @@ const language = ref(1);
 
 const userList = ["Tom", "Uni", "Lucy", "Edward"];
 const colorList = ["#f56a00", "#7265e6", "#ffbf00", "#00a2ae"];
-const avatarValue = ref(userList[0]);
+const username = sessionStorage.getItem("username");
 const color = ref(colorList[0]);
 
 const handleCollapseClick = () => {
@@ -102,13 +101,6 @@ const translationClick = (key: number) => {
       console.log("中文");
       break;
   }
-};
-const changeValue = () => {
-  const index = userList.indexOf(avatarValue.value);
-  avatarValue.value =
-    index < userList.length - 1 ? userList[index + 1] : userList[0];
-  color.value =
-    index < colorList.length - 1 ? colorList[index + 1] : colorList[0];
 };
 
 const logout = () => {

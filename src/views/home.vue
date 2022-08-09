@@ -83,8 +83,13 @@
             v-if="developments.length > 0"
             class="developments-item flex-row"
             v-for="(item, index) in developments"
+            :key="'info' + index"
           >
-            {{ index }}
+            <img class="type-img" :src="handleType(item)" />
+            <div class="flex-col fill-flex right-infos-container">
+              <div class="infos">{{ item.infos }}</div>
+              <div class="date">{{ item.date }}</div>
+            </div>
           </div>
           <div class="no-developments flex-col" v-else>
             <img class="no-data-img" src="../assets/web404.svg" />
@@ -103,7 +108,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { pinyin } from "pinyin-pro";
 // @ts-ignore
 import { getWeather, getCityCode, getCityPosition } from "/@/service/help.js";
@@ -125,6 +130,8 @@ interface WeatherInfo {
 
 interface DevelopmentsItem {
   date: string;
+  infos: string;
+  type: "shop" | "video" | "music";
 }
 
 const weatherArr = [
@@ -168,7 +175,28 @@ const handleWeather = (dayWeather: string) => {
   return temp;
 };
 
-const timeHello = ref("早上好");
+const timeHello = computed(() => {
+  // 获取当前时间
+  const timeNow = new Date();
+  // 获取当前小时
+  const hours = timeNow.getHours();
+  // 设置默认文字
+  let text = ``;
+  // 判断当前时间段
+  if (hours >= 0 && hours <= 6) {
+    text = `凌晨好`;
+  } else if (hours > 6 && hours <= 10) {
+    text = `上午好`;
+  } else if (hours > 10 && hours <= 14) {
+    text = `中午好`;
+  } else if (hours > 14 && hours <= 18) {
+    text = `下午好`;
+  } else if (hours > 18 && hours <= 24) {
+    text = `晚上好`;
+  }
+  // 返回当前时间段对应的状态
+  return text;
+});
 const username = sessionStorage.getItem("username");
 const weatherInfo = ref([] as WeatherInfo[]);
 const developments = ref([] as DevelopmentsItem[]);
@@ -178,6 +206,16 @@ const num = ref("0");
 const handleAbsoluteData = (aData: any) => {
   console.log(aData);
   return JSON.stringify(aData);
+};
+
+const handleType = (item: DevelopmentsItem) => {
+  if (item.type === "music") {
+    return "/music-m.svg";
+  } else if (item.type === "video") {
+    return "/video-m.svg";
+  } else {
+    return "/goods-m.svg";
+  }
 };
 
 const city = ref("");
@@ -258,12 +296,12 @@ const initMap = () => {
         //设置地图容器id
         viewMode: "3D", //是否为3D地图模式
         zoom: 10, //初始化地图级别
-        mapStyle: "amap://styles/light",
+        // mapStyle: "amap://styles/c558c633a5c36003169dbcc6c0bdd432",
         // center: [105.602725, 37.076636], //初始化地图中心点位置
       });
     })
     .catch((e) => {
-      console.log(e);
+      console.log("加载高德地图错误", e);
     });
 };
 
@@ -281,6 +319,29 @@ onMounted(async () => {
 
   weatherInfo.value = tempInfo.forecasts[0].casts;
   await initMap();
+
+  developments.value = [
+    {
+      date: "2018-8-1",
+      infos: "上架了雨伞",
+      type: "shop",
+    },
+    {
+      date: "2018-8-1",
+      infos: "新增了<<112.mp4>>",
+      type: "video",
+    },
+    {
+      date: "2018-8-1",
+      infos: "上架了杯子",
+      type: "shop",
+    },
+    {
+      date: "2018-8-1",
+      infos: "新增了<<我是如此相信>>",
+      type: "music",
+    },
+  ];
 
   setTimeout(() => {
     num.value = "100";
@@ -450,12 +511,40 @@ onMounted(async () => {
           margin-top: 15px;
         }
       }
+
+      .developments-container {
+        padding: 15px;
+        .developments-item {
+          align-items: center;
+          border-bottom: 1px solid @border-color-split;
+          padding: 10px 0;
+
+          .type-img {
+            flex: 0 0 36px;
+            width: 36px;
+          }
+
+          .right-infos-container {
+            padding-left: 15px;
+
+            .infos {
+              font-size: 16px;
+              font-weight: 700;
+            }
+
+            .date {
+              font-size: 14px;
+              color: #999999;
+            }
+          }
+        }
+      }
     }
 
     .right-illustration {
       margin-left: 15px;
       background-color: #ffffff;
-      flex: 0 0 260px;
+      flex: 0 0 300px;
       background: url(../assets/avatar.gif) center no-repeat;
       background-size: cover;
     }
