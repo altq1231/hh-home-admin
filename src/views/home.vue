@@ -53,7 +53,31 @@
         </div>
       </div>
     </div>
-    <div class="fill-flex bottom-map">
+    <div class="latest-developments flex-row">
+      <div class="fill-flex left-developments">
+        <div class="card-title flex-row">
+          <div class="fill-flex title">最新动态</div>
+          <router-link to="/">查看更多</router-link>
+        </div>
+        <div class="developments-container">
+          <div
+            v-if="developments.length > 0"
+            class="developments-item flex-row"
+            v-for="(item, index) in developments"
+          >
+            {{ index }}
+          </div>
+          <div class="no-developments flex-col" v-else>
+            <img class="no-data-img" src="../assets/web404.svg" />
+            <p class="no-data-text">暂无数据</p>
+          </div>
+        </div>
+      </div>
+      <div class="right-illustration">
+        <!-- <img src="/avatar.gif" alt="avatar" class="illustration" /> -->
+      </div>
+    </div>
+    <div class="bottom-map">
       <div id="mapContainer" class="map-container"></div>
     </div>
   </div>
@@ -132,6 +156,7 @@ const handleWeather = (dayWeather: string) => {
 const timeHello = ref("早上好");
 const username = sessionStorage.getItem("username");
 const weatherInfo = ref([{ date: "", dayweather: "" }]);
+const developments = ref([]);
 
 const globalStore = GlobalStore();
 const { pageData, absoluteData } = storeToRefs(globalStore);
@@ -258,7 +283,7 @@ onMounted(async () => {
 <style scoped lang="less">
 .home-page {
   width: 100%;
-  height: calc(100vh - 144px);
+  min-height: calc(100vh - 144px);
 
   .home-header {
     padding: 0 15px;
@@ -313,6 +338,7 @@ onMounted(async () => {
           .weather-img {
             flex: 0 0 40px;
             height: 40px;
+            user-select: none;
           }
 
           .day-weather {
@@ -376,11 +402,60 @@ onMounted(async () => {
       }
     }
   }
+  .card-title {
+    height: 50px;
+    align-items: center;
+    padding: 0 15px;
+    border-bottom: 1px solid @border-color-base;
+
+    .title {
+      font-size: 18px;
+      color: #000;
+    }
+  }
+
+  .latest-developments {
+    flex: 0 0 auto;
+    padding: 0 15px;
+    margin-top: 15px;
+
+    .left-developments {
+      background-color: #ffffff;
+
+      .no-developments {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+
+        .no-data-img {
+          width: 120px;
+          user-select: none;
+        }
+
+        .no-data-text {
+          font-size: 14px;
+          color: #999999;
+          margin-bottom: 0;
+          margin-top: 15px;
+        }
+      }
+    }
+
+    .right-illustration {
+      margin-left: 15px;
+      background-color: #ffffff;
+      flex: 0 0 260px;
+      background: url(../assets/avatar.gif) center no-repeat;
+      background-size: cover;
+    }
+  }
   .bottom-map {
     margin: 15px 15px 0;
     background: #ffffff;
     padding: 10px;
     border-radius: 2px;
+    height: 500px;
     .map-container {
       width: 100%;
       height: 100%;
@@ -410,6 +485,18 @@ onMounted(async () => {
         .weather-container {
           padding-left: 0;
         }
+      }
+    }
+  }
+}
+@media screen and (max-width: 800px) {
+  .home-page {
+    .latest-developments {
+      flex-direction: column;
+
+      .right-illustration {
+        margin-left: 0;
+        margin-top: 15px;
       }
     }
   }
