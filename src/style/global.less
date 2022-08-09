@@ -118,6 +118,33 @@ body,
   opacity: 0;
 }
 
+/* 可以设置不同的进入和离开动画   */
+/* 设置持续时间和动画函数        */
+.weather-slide-enter-active,
+.weather-slide-leave-active {
+  transition: all 0.3s;
+}
+
+.weather-slide-enter-from {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.weather-slide-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.weather-slide-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.weather-slide-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;

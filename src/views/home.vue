@@ -1,18 +1,29 @@
 <template>
   <div class="home-page flex-col">
     <div class="home-header flex-row">
-      <a-avatar shape="circle" :size="72" src="/avatar.gif"></a-avatar>
+      <a-avatar
+        class="left-avatar"
+        shape="circle"
+        :size="72"
+        src="/avatar.gif"
+      ></a-avatar>
       <div class="fill-flex center-container flex-row">
         <div class="left-hello flex-col">
           <p class="user-info">{{ timeHello }} , {{ username }}</p>
           <p class="slogan">永远相信美好的事情即将发生！</p>
         </div>
-        <Transition name="slide-fade">
-          <div
-            class="weather-container flex-row fill-flex"
-            v-if="weatherInfo.length > 0"
+        <div class="fill-flex weather-info">
+          <transition-group
+            name="weather-slide"
+            tag="div"
+            class="weather-container flex-row"
           >
-            <div class="weather flex-col" v-for="weather in weatherInfo">
+            <div
+              v-for="(weather, index) in weatherInfo.slice(0, 4)"
+              class="weather flex-col"
+              :style="{ transitionDelay: index * 0.3 + 's' }"
+              :key="weather?.date"
+            >
               <img
                 :src="
                   weather?.dayweather ? handleWeather(weather?.dayweather) : ''
@@ -24,8 +35,8 @@
               <div class="day-weather">{{ weather?.dayweather }}</div>
               <div class="date">{{ weather?.date }}</div>
             </div>
-          </div>
-        </Transition>
+          </transition-group>
+        </div>
       </div>
       <div class="total-info flex-row">
         <div class="info-item flex-col">
@@ -104,15 +115,15 @@ const weatherArr = [
 const handleWeather = (dayWeather: string) => {
   const pinyinAll = pinyin(dayWeather, {
     toneType: "none",
-  });
+    type: "string",
+  }).replace(/\s*/g, "");
+
   let temp = "";
 
   if (weatherArr.includes(pinyinAll)) {
-    temp = `/weather/${pinyin(dayWeather, {
-      toneType: "none",
-    })}.svg`;
+    temp = `/weather/${pinyinAll}.svg`;
   } else {
-    let temp = "/weather/qing.svg";
+    temp = "/weather/qing.svg";
   }
 
   return temp;
@@ -231,13 +242,17 @@ onMounted(async () => {
   const cityPosition = await getCityPosition();
   // @ts-ignore
   const adCode = await getCityCode(cityPosition.city);
-  const tempInfo = await getWeather(adCode.data.adCode);
-  const liveInfo = await getLiveWeather(adCode.data.adCode);
+  let tempInfo: any;
+  // @ts-ignore
+  if (adCode.state) {
+    tempInfo = await getWeather(adCode.data.adCode);
+  } else {
+    tempInfo = await getWeather(110000);
+  }
+
   // @ts-ignore
   weatherInfo.value = tempInfo.forecasts[0].casts;
   await initMap();
-
-  console.log(weatherInfo.value, liveInfo);
 });
 </script>
 <style scoped lang="less">
@@ -251,10 +266,16 @@ onMounted(async () => {
     flex: 0 0 102px;
     transition: all 0.3s;
     align-items: center;
-    .center-container {
-      padding: 0 15px;
+    .left-avatar {
+      flex: 0 0 72px;
+      width: 72px;
+      height: 72px;
+    }
 
+    .center-container {
+      transition: all 0.3s;
       .left-hello {
+        padding-left: 15px;
         flex: 0 0 auto;
         justify-content: center;
 
@@ -263,6 +284,7 @@ onMounted(async () => {
         }
 
         .user-info {
+          transition: all 0.3s;
           font-size: 16px;
           color: #333333;
           margin-bottom: 10px;
@@ -270,15 +292,22 @@ onMounted(async () => {
         }
 
         .slogan {
+          transition: all 0.3s;
           font-size: 16px;
           color: #666;
         }
       }
+
+      .weather-info {
+        height: 90px;
+      }
       .weather-container {
-        padding: 0 15px;
+        padding-left: 15px;
+        transition: all 0.3s;
 
         .weather {
-          flex: 0 0 120px;
+          width: 120px;
+          transition: all 0.3s;
           padding: 0 5px;
 
           .weather-img {
@@ -306,7 +335,7 @@ onMounted(async () => {
 
     .total-info {
       flex: 0 0 auto;
-      height: 100%;
+      height: 100px;
       .info-item {
         height: 100%;
         flex: 0 0 auto;
@@ -355,6 +384,45 @@ onMounted(async () => {
     .map-container {
       width: 100%;
       height: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 1260px) {
+  .home-page {
+    .home-header {
+      flex: 0 0 auto;
+      flex-direction: column;
+
+      .center-container {
+        flex-direction: column;
+
+        .left-hello {
+          padding: 15px 0;
+          .user-info {
+            text-align: center;
+          }
+
+          .slogan {
+            text-align: center;
+          }
+        }
+        .weather-container {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .home-page {
+    .home-header {
+      .center-container {
+        .weather-container .weather {
+          width: 102px;
+        }
+      }
     }
   }
 }
