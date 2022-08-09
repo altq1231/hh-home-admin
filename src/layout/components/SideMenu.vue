@@ -53,4 +53,14 @@ const handleMenuClick = ({ key }: any) => {
   });
 };
 </script>
-<style lang="less" scoped></style>
+<style lang="less">
+.side-menu.ant-menu-light .ant-menu-item:hover,
+.side-menu.ant-menu-light .ant-menu-item-active,
+.side-menu.ant-menu-light
+  .ant-menu:not(.ant-menu-inline)
+  .ant-menu-submenu-open,
+.side-menu.ant-menu-light .ant-menu-submenu-active,
+.side-menu.ant-menu-light .ant-menu-submenu-title:hover {
+  background-color: #e6f5ff;
+}
+</style>

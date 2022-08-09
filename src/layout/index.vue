@@ -77,17 +77,13 @@ router.beforeEach((to, from) => {
     margin-left: 210px;
     transition: margin-left 0.2s;
     flex: 1;
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 86px);
 
     .bottom-main-container {
-      background-color: #ffffff;
-      margin-top: 101px;
-      margin-left: 15px;
-      margin-right: 15px;
-      width: calc(100% - 30px);
+      margin-top: 86px;
+      width: 100%;
       transition: width 0.2s, margin 0.2s;
       overflow: hidden;
-      min-height: calc(100vh - 100px);
     }
   }
 

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "ant-design-vue": "^3.2.10",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
@@ -16,6 +17,7 @@
     "js-md5": "^0.7.3",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.17",
+    "pinyin-pro": "^3.11.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.3"
   },

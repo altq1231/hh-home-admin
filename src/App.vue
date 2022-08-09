@@ -26,9 +26,9 @@ const drawerVisible = ref(false);
 </script>
 
 <style lang="less">
-.route-link {
+.route-link.ant-btn {
   position: fixed;
-  top: 140px;
+  top: 52px;
   right: 2px;
   z-index: 500;
 }
