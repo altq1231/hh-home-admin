@@ -88,30 +88,16 @@
 </template>
 
 <script lang="ts" setup>
-// @ts-ignore：无法被执行的代码的错误
-import { reactive, ref, onMounted } from "vue";
-// @ts-ignore：无法被执行的代码的错误
-import { GlobalStore } from "/@/store/common";
-// @ts-ignore：无法被执行的代码的错误
-import NProgress from "nprogress";
+import { ref, onMounted } from "vue";
 import { pinyin } from "pinyin-pro";
-
-import {
-  getWeather,
-  getCityCode,
-  getCityPosition,
-  getLiveWeather,
-  // @ts-ignore
-} from "/@/service/help.js";
+// @ts-ignore
+import { getWeather, getCityCode, getCityPosition } from "/@/service/help.js";
 import {
   MenuOutlined,
   FileAddOutlined,
   FrownOutlined,
   FolderOutlined,
 } from "@ant-design/icons-vue";
-import { storeToRefs } from "pinia";
-// @ts-ignore
-// import { location } from "../utils/location.js";
 import { shallowRef } from "@vue/reactivity";
 import AMapLoader from "@amap/amap-jsapi-loader";
 
@@ -170,24 +156,9 @@ const username = sessionStorage.getItem("username");
 const weatherInfo = ref([] as WeatherInfo[]);
 const developments = ref([] as DevelopmentsItem[]);
 
-const globalStore = GlobalStore();
-const { pageData, absoluteData } = storeToRefs(globalStore);
-
-// console.log(title.value);
-
-const handleLoad = (data: any) => {};
-const dragover = (e: any) => {
-  // console.log("home------------", e);
-  e.preventDefault();
-};
-
 const handleAbsoluteData = (aData: any) => {
   console.log(aData);
   return JSON.stringify(aData);
-};
-
-const handleClick = () => {
-  NProgress.set(0.5);
 };
 
 const city = ref("");

@@ -45,3 +45,10 @@ export const pathMap = {
   order_detail: "订单详情",
   account: "修改账户",
 };
+
+export function getScrollPosition(el = window) {
+  return {
+    x: el.pageXOffset !== undefined ? el.pageXOffset : el.scrollLeft,
+    y: el.pageYOffset !== undefined ? el.pageYOffset : el.scrollTop,
+  };
+}

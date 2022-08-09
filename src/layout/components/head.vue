@@ -121,6 +121,7 @@ const logout = () => {
   left: 210px;
   right: 0;
   top: 0;
+  z-index: 100;
   height: 86px;
   width: calc(100% - 200px);
   background-color: #ffffff;
