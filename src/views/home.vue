@@ -7,20 +7,25 @@
           <p class="user-info">{{ timeHello }} , {{ username }}</p>
           <p class="slogan">永远相信美好的事情即将发生！</p>
         </div>
-        <div class="weather-container flex-row fill-flex">
-          <div class="weather flex-col" v-for="weather in weatherInfo">
-            <img
-              :src="`/weather/${pinyin(weather?.dayweather, {
-                toneType: 'none',
-              })}.svg`"
-              :alt="weather?.dayweather"
-              class="weather-img"
-            />
+        <Transition name="slide-fade">
+          <div
+            class="weather-container flex-row fill-flex"
+            v-if="weatherInfo.length > 0"
+          >
+            <div class="weather flex-col" v-for="weather in weatherInfo">
+              <img
+                :src="
+                  weather?.dayweather ? handleWeather(weather?.dayweather) : ''
+                "
+                :alt="weather?.dayweather"
+                class="weather-img"
+              />
 
-            <div class="day-weather">{{ weather?.dayweather }}</div>
-            <div class="date">{{ weather?.date }}</div>
+              <div class="day-weather">{{ weather?.dayweather }}</div>
+              <div class="date">{{ weather?.date }}</div>
+            </div>
           </div>
-        </div>
+        </Transition>
       </div>
       <div class="total-info flex-row">
         <div class="info-item flex-col">
@@ -72,6 +77,46 @@ import { shallowRef } from "@vue/reactivity";
 import AMapLoader from "@amap/amap-jsapi-loader";
 
 let map = shallowRef(null);
+const weatherArr = [
+  "bingbao",
+  "daxue",
+  "dayu",
+  "duoyun",
+  "leizhenyu",
+  "longjuanfeng",
+  "qing",
+  "shachenbao",
+  "taifeng",
+  "wu",
+  "wumai",
+  "xiaoxue",
+  "xiaoyu",
+  "xiaoyu",
+  "yangchen",
+  "yin",
+  "yujiaxue",
+  "zhenxue",
+  "zhenyu",
+  "zhongxue",
+  "zhongyu",
+];
+
+const handleWeather = (dayWeather: string) => {
+  const pinyinAll = pinyin(dayWeather, {
+    toneType: "none",
+  });
+  let temp = "";
+
+  if (weatherArr.includes(pinyinAll)) {
+    temp = `/weather/${pinyin(dayWeather, {
+      toneType: "none",
+    })}.svg`;
+  } else {
+    let temp = "/weather/qing.svg";
+  }
+
+  return temp;
+};
 
 const timeHello = ref("早上好");
 const username = sessionStorage.getItem("username");
