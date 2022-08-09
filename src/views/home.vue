@@ -22,18 +22,22 @@
               v-for="(weather, index) in weatherInfo.slice(0, 4)"
               class="weather flex-col"
               :style="{ transitionDelay: index * 0.3 + 's' }"
-              :key="weather?.date"
+              :key="weather.date"
             >
               <img
                 :src="
-                  weather?.dayweather ? handleWeather(weather?.dayweather) : ''
+                  weather?.dayweather ? handleWeather(weather.dayweather) : ''
                 "
-                :alt="weather?.dayweather"
+                :alt="weather.dayweather"
                 class="weather-img"
               />
 
-              <div class="day-weather">{{ weather?.dayweather }}</div>
-              <div class="date">{{ weather?.date }}</div>
+              <div class="day-weather">
+                {{ weather.dayweather }}
+              </div>
+              <div class="date">
+                {{ weather.date }}
+              </div>
             </div>
           </transition-group>
         </div>
@@ -111,7 +115,15 @@ import { storeToRefs } from "pinia";
 import { shallowRef } from "@vue/reactivity";
 import AMapLoader from "@amap/amap-jsapi-loader";
 
-let map = shallowRef(null);
+interface WeatherInfo {
+  date: string;
+  dayweather: string;
+}
+
+interface DevelopmentsItem {
+  date: string;
+}
+
 const weatherArr = [
   "bingbao",
   "daxue",
@@ -155,8 +167,8 @@ const handleWeather = (dayWeather: string) => {
 
 const timeHello = ref("早上好");
 const username = sessionStorage.getItem("username");
-const weatherInfo = ref([{ date: "", dayweather: "" }]);
-const developments = ref([]);
+const weatherInfo = ref([] as WeatherInfo[]);
+const developments = ref([] as DevelopmentsItem[]);
 
 const globalStore = GlobalStore();
 const { pageData, absoluteData } = storeToRefs(globalStore);
@@ -180,6 +192,7 @@ const handleClick = () => {
 
 const city = ref("");
 const cityCode = ref("");
+let map = shallowRef({} as any);
 
 // 实验性功能 获取地理位置
 const getLocation = () => {
@@ -201,7 +214,7 @@ const getLocation = () => {
         //设置地图容器id
         viewMode: "3D", //是否为3D地图模式
         zoom: 5, //初始化地图级别
-        center: [105.602725, 37.076636], //初始化地图中心点位置
+        // center: [105.602725, 37.076636], //初始化地图中心点位置
       });
 
       // @ts-ignore
@@ -229,7 +242,7 @@ const getLocation = () => {
       });
 
       console.log(11111, geolocation);
-      // @ts-ignore
+
       map.value.addControl(geolocation);
     })
     .catch((e) => {
@@ -255,6 +268,7 @@ const initMap = () => {
         //设置地图容器id
         viewMode: "3D", //是否为3D地图模式
         zoom: 10, //初始化地图级别
+        mapStyle: "amap://styles/light",
         // center: [105.602725, 37.076636], //初始化地图中心点位置
       });
     })
@@ -264,18 +278,17 @@ const initMap = () => {
 };
 
 onMounted(async () => {
-  const cityPosition = await getCityPosition();
-  // @ts-ignore
-  const adCode = await getCityCode(cityPosition.city);
+  const cityPosition: any = await getCityPosition();
+
+  const adCode: any = await getCityCode(cityPosition.city);
   let tempInfo: any;
-  // @ts-ignore
+
   if (adCode.state) {
     tempInfo = await getWeather(adCode.data.adCode);
   } else {
     tempInfo = await getWeather(110000);
   }
 
-  // @ts-ignore
   weatherInfo.value = tempInfo.forecasts[0].casts;
   await initMap();
 });
