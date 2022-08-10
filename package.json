@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "@vueuse/core": "^9.1.0",
     "ant-design-vue": "^3.2.10",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",

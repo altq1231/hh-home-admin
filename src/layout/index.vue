@@ -41,8 +41,6 @@ const collapsed = ref<boolean>(false);
     margin-left: 210px;
     transition: margin-left 0.2s;
     flex: 1;
-    min-height: 100vh;
-    transition: all 0.3s;
 
     .bottom-main-container {
       margin-top: 86px;
