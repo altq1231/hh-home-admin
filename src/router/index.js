@@ -18,19 +18,19 @@ const routes = [
         path: "/goods-manage",
         name: "goods-manage",
         meta: { title: "商城管理" },
-        component: () => import("/@/views/goods-manage.vue"),
+        component: () => import("../views/goods-manage/index.vue"),
       },
       {
         path: "/video-manage",
         name: "video-manage",
         meta: { title: "视频管理" },
-        component: () => import("/@/views/video-manage.vue"),
+        component: () => import("../views/video-manage/index.vue"),
       },
       {
         path: "/music-manage",
         name: "music-manage",
         meta: { title: "音乐管理" },
-        component: () => import("/@/views/music-manage.vue"),
+        component: () => import("../views/music-manage/index.vue"),
       },
       {
         path: "/test",
