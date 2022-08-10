@@ -3,6 +3,7 @@
     class="side-menu"
     @click="handleMenuClick"
     v-model:selectedKeys="selectedKeys"
+    v-model:openKeys="openKeys"
     mode="inline"
   >
     <a-menu-item key="/">
@@ -84,6 +85,7 @@ import {
 } from "@ant-design/icons-vue";
 
 const router = useRouter();
+const openKeys = ["sub1", "sub2", "sub3"];
 const selectedKeys = ref<string[]>([router.currentRoute.value.path]);
 
 const handleMenuClick = ({ key }: any) => {
