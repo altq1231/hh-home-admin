@@ -1,5 +1,5 @@
 <template>
-  <div class="music-manage">
+  <div class="music-dashboard">
     <div class="top-statistical-info flex-row">
       <div class="common-card-container fill-flex">
         <div class="flex-row card-title">
@@ -41,7 +41,7 @@
 
 <script lang="ts" setup></script>
 <style lang="less">
-.music-manage {
+.music-dashboard {
   padding: 16px 16px 0;
 
   .top-statistical-info {

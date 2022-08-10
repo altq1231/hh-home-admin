@@ -1,5 +1,5 @@
 <template>
-  <div class="video-manage">
+  <div class="video-dashboard">
     <div class="top-statistical-info flex-row">
       <div class="common-card-container fill-flex">
         <div class="flex-row card-title">
@@ -41,7 +41,7 @@
 
 <script lang="ts" setup></script>
 <style lang="less">
-.video-manage {
+.video-dashboard {
   padding: 16px 16px 0;
 
   .top-statistical-info {

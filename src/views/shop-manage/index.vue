@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-manage">
+  <div class="shop-dashboard">
     <div class="top-statistical-info flex-row">
       <div class="common-card-container fill-flex">
         <div class="flex-row card-title">
@@ -31,7 +31,7 @@
 
 <script lang="ts" setup></script>
 <style lang="less">
-.goods-manage {
+.shop-dashboard {
   padding: 16px 16px 0;
 
   .top-statistical-info {
