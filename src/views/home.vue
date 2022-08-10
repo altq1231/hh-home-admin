@@ -73,7 +73,7 @@
       </div>
     </div>
     <div class="latest-developments flex-row">
-      <div class="fill-flex left-developments">
+      <div class="fill-flex left-developments common-card-container">
         <div class="card-title flex-row">
           <div class="fill-flex title">最新动态</div>
           <router-link to="/">查看更多</router-link>
@@ -504,17 +504,6 @@ onMounted(async () => {
           }
         }
       }
-    }
-  }
-  .card-title {
-    height: 50px;
-    align-items: center;
-    padding: 0 16px;
-    border-bottom: 1px solid @border-color-base;
-
-    .title {
-      font-size: 18px;
-      color: #000;
     }
   }
 

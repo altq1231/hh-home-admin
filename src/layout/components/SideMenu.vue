@@ -11,24 +11,60 @@
       </template>
       <span> 首页 </span>
     </a-menu-item>
-    <a-menu-item key="/goods-manage">
+    <a-sub-menu key="sub1">
       <template #icon>
         <shop-outlined />
       </template>
-      <span>商城管理</span>
-    </a-menu-item>
-    <a-menu-item key="/video-manage">
+      <template #title>商城管理</template>
+      <a-menu-item key="/shop-manage">
+        <template #icon>
+          <dashboard-outlined />
+        </template>
+        <span>Dashboard</span>
+      </a-menu-item>
+      <a-menu-item key="/goods-manage">
+        <template #icon>
+          <shopping-outlined />
+        </template>
+        <span>商品管理</span>
+      </a-menu-item>
+    </a-sub-menu>
+    <a-sub-menu key="sub2">
       <template #icon>
         <video-camera-outlined />
       </template>
-      <span>视频管理</span>
-    </a-menu-item>
-    <a-menu-item key="/music-manage">
+      <template #title>视频库管理</template>
+      <a-menu-item key="/video-dashboard">
+        <template #icon>
+          <dashboard-outlined />
+        </template>
+        <span>Dashboard</span>
+      </a-menu-item>
+      <a-menu-item key="/video-manage">
+        <template #icon>
+          <play-square-outlined />
+        </template>
+        <span>视频管理</span>
+      </a-menu-item>
+    </a-sub-menu>
+    <a-sub-menu key="sub3">
       <template #icon>
-        <customer-service-outlined />
+        <shop-outlined />
       </template>
-      <span>音乐管理</span>
-    </a-menu-item>
+      <template #title>曲库管理</template>
+      <a-menu-item key="/music-dashboard">
+        <template #icon>
+          <customer-service-outlined />
+        </template>
+        <span>Dashboard</span>
+      </a-menu-item>
+      <a-menu-item key="/music-manage">
+        <template #icon>
+          <play-circle-outlined />
+        </template>
+        <span>音乐管理</span>
+      </a-menu-item>
+    </a-sub-menu>
   </a-menu>
 </template>
 <script lang="ts" setup>
@@ -40,6 +76,11 @@ import {
   CustomerServiceOutlined,
   ShopOutlined,
   HomeOutlined,
+  DashboardOutlined,
+  PlusOutlined,
+  PlaySquareOutlined,
+  ShoppingOutlined,
+  PlayCircleOutlined,
 } from "@ant-design/icons-vue";
 
 const router = useRouter();
@@ -57,14 +98,4 @@ router.beforeEach((to, from) => {
   selectedKeys.value = [to.path];
 });
 </script>
-<style lang="less">
-.side-menu.ant-menu-light .ant-menu-item:hover,
-.side-menu.ant-menu-light .ant-menu-item-active,
-.side-menu.ant-menu-light
-  .ant-menu:not(.ant-menu-inline)
-  .ant-menu-submenu-open,
-.side-menu.ant-menu-light .ant-menu-submenu-active,
-.side-menu.ant-menu-light .ant-menu-submenu-title:hover {
-  background-color: #e6f5ff;
-}
-</style>
+<style lang="less"></style>

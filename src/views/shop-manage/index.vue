@@ -1,9 +1,9 @@
 <template>
-  <div class="music-manage">
+  <div class="goods-manage">
     <div class="top-statistical-info flex-row">
       <div class="common-card-container fill-flex">
         <div class="flex-row card-title">
-          <div class="title fill-flex">热歌榜</div>
+          <div class="title fill-flex">今日订单数</div>
         </div>
         <div class="card-container">
           <div class="content-container"></div>
@@ -11,29 +11,19 @@
       </div>
       <div class="common-card-container fill-flex">
         <div class="flex-row card-title">
-          <div class="title fill-flex">收藏榜</div>
+          <div class="title fill-flex">今日日活数</div>
         </div>
         <div class="card-container">
           <div class="content-container"></div>
         </div>
       </div>
     </div>
-    <div class="top-statistical-info flex-row">
-      <div class="common-card-container fill-flex">
-        <div class="flex-row card-title">
-          <div class="title fill-flex">歌手榜</div>
-        </div>
-        <div class="card-container">
-          <div class="content-container"></div>
-        </div>
+    <div class="system-statistical-info common-card-container">
+      <div class="flex-row card-title">
+        <div class="title fill-flex">系统统计</div>
       </div>
-      <div class="common-card-container fill-flex">
-        <div class="flex-row card-title">
-          <div class="title fill-flex">特色榜</div>
-        </div>
-        <div class="card-container">
-          <div class="content-container"></div>
-        </div>
+      <div class="card-container">
+        <div class="chart-container"></div>
       </div>
     </div>
   </div>
@@ -41,14 +31,10 @@
 
 <script lang="ts" setup></script>
 <style lang="less">
-.music-manage {
+.goods-manage {
   padding: 16px 16px 0;
 
   .top-statistical-info {
-    & + .top-statistical-info {
-      margin-top: 16px;
-    }
-
     .common-card-container {
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
       border-radius: 4px;
@@ -57,9 +43,16 @@
       }
     }
   }
-
   .content-container {
     height: 300px;
+  }
+
+  .system-statistical-info {
+    margin-top: 16px;
+
+    .chart-container {
+      height: 400px;
+    }
   }
 }
 </style>

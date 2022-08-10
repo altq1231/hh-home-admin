@@ -82,13 +82,8 @@ const props = defineProps({
       :deep(.ant-menu-submenu-title .ant-menu-item-icon),
       :deep(.ant-menu-item .anticon),
       :deep(.ant-menu-submenu-title .anticon) {
-        font-size: 16px;
-        min-width: 16px;
-        line-height: 36px;
-        vertical-align: 0;
-        display: flex;
-        align-items: center;
-        height: 36px;
+        font-size: 20px;
+        min-width: 20px;
       }
     }
   }
