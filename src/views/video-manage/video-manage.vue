@@ -2,7 +2,10 @@
   <div class="video-manage">
     <div class="common-card-container">
       <div class="flex-row card-title">
-        <a-button type="primary">添加视频</a-button>
+        <a-button type="primary">
+          <template #icon><PlusOutlined /></template>
+          添加视频
+        </a-button>
       </div>
       <div class="card-container">
         <div class="content-container"></div>
@@ -11,7 +14,9 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { PlusOutlined } from "@ant-design/icons-vue";
+</script>
 <style lang="less">
 .video-manage {
   padding: 16px 16px 0;

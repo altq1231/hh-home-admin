@@ -78,7 +78,6 @@ import {
   ShopOutlined,
   HomeOutlined,
   DashboardOutlined,
-  PlusOutlined,
   PlaySquareOutlined,
   ShoppingOutlined,
   PlayCircleOutlined,
