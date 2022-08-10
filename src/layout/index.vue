@@ -22,32 +22,12 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 // @ts-ignore
 import Head from "./components/head.vue";
 // @ts-ignore
 import LeftSide from "./components/LeftSide.vue";
 
 const collapsed = ref<boolean>(false);
-
-//router是全局路由对象，route= userRoute()是当前路由对象
-let router = useRouter();
-
-const logout = () => {
-  sessionStorage.removeItem("username");
-  sessionStorage.removeItem("_id");
-  router.push({
-    //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
-    path: "/login",
-  });
-};
-
-const goToPage = (path: string) => {
-  router.push({
-    //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
-    path: path,
-  });
-};
 </script>
 
 <style lang="less" scoped>

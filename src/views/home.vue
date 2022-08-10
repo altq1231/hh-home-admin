@@ -522,10 +522,14 @@ onMounted(async () => {
     flex: 0 0 auto;
     padding: 0 15px;
     margin-top: 15px;
+    transition: all 0.3s;
 
     .left-developments {
       background-color: #ffffff;
-
+      transition: all 0.3s;
+      .operation-records-container {
+        transition: all 0.3s;
+      }
       .no-developments {
         width: 100%;
         padding: 15px;
@@ -585,6 +589,7 @@ onMounted(async () => {
     }
 
     .right-illustration {
+      transition: all 0.3s;
       margin-left: 15px;
       background-color: #ffffff;
       flex: 0 0 360px;

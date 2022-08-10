@@ -26,13 +26,14 @@ export function improveUserInfo(params) {
   return axios.post("/user/improveUserInfo", params);
 }
 
+// 退出登录
+export function logout() {
+  return axios.get("/user/logout");
+}
+
 export function getUserInfo() {
   return axios.get("/info");
 }
 export function EditUserInfo(params) {
   return axios.put("/info", params);
-}
-
-export function logout() {
-  return axios.post("/logout");
 }

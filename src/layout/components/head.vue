@@ -53,7 +53,7 @@
               <a-menu-item> 个人中心 </a-menu-item>
               <a-menu-item> 设置 </a-menu-item>
               <a-menu-divider />
-              <a-menu-item @click="logout"> 退出登录 </a-menu-item>
+              <a-menu-item @click="handleLogout"> 退出登录 </a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
@@ -69,7 +69,11 @@ import {
   TranslationOutlined,
   CaretDownOutlined,
 } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+// @ts-ignore
+import { logout } from "/@/service/user";
 const emits = defineEmits(["update:collapsed"]);
 const props = defineProps({
   collapsed: {
@@ -103,8 +107,26 @@ const translationClick = (key: number) => {
   }
 };
 
-const logout = () => {
-  console.log("logout");
+//router是全局路由对象，route= userRoute()是当前路由对象
+let router = useRouter();
+
+const handleLogout = async () => {
+  sessionStorage.removeItem("username");
+  sessionStorage.removeItem("_id");
+  const logoutRes = await logout();
+  // @ts-ignore
+  if (logoutRes.state) {
+    // @ts-ignore
+    message.success(logoutRes.msg);
+  } else {
+    // @ts-ignore
+    message.error(logoutRes.msg);
+  }
+
+  router.push({
+    //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
+    path: "/login",
+  });
 };
 </script>
 <style lang="less" scoped>
