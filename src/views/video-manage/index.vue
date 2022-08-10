@@ -1,4 +1,3 @@
-span
 <template>
   <div class="goods-manage">视频管理</div>
 </template>

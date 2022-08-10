@@ -43,7 +43,7 @@ import {
 } from "@ant-design/icons-vue";
 
 const router = useRouter();
-const selectedKeys = ref<string[]>(["/"]);
+const selectedKeys = ref<string[]>([router.currentRoute.value.path]);
 
 const handleMenuClick = ({ key }: any) => {
   // console.log(key);
@@ -52,6 +52,10 @@ const handleMenuClick = ({ key }: any) => {
     path: key,
   });
 };
+
+router.beforeEach((to, from) => {
+  selectedKeys.value = [to.path];
+});
 </script>
 <style lang="less">
 .side-menu.ant-menu-light .ant-menu-item:hover,

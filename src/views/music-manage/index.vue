@@ -1,4 +1,3 @@
-span
 <template>
   <div class="goods-manage">音乐管理</div>
 </template>

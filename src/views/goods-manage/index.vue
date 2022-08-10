@@ -1,4 +1,3 @@
-span
 <template>
   <div class="goods-manage">商城管理</div>
 </template>

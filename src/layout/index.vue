@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, watch } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 // @ts-ignore
 import Head from "./components/head.vue";
@@ -34,7 +34,8 @@ const collapsed = ref<boolean>(false);
 let router = useRouter();
 
 const logout = () => {
-  sessionStorage.removeItem("jwt");
+  sessionStorage.removeItem("username");
+  sessionStorage.removeItem("_id");
   router.push({
     //传递参数使用query的话，指定path或者name都行，但使用params的话，只能使用name指定
     path: "/login",
@@ -47,23 +48,6 @@ const goToPage = (path: string) => {
     path: path,
   });
 };
-
-const state = reactive({
-  transitionName: "slide-left",
-});
-
-router.beforeEach((to, from) => {
-  // if (to.meta.index > from.meta.index) {
-  //   console.log(1);
-  //   state.transitionName = "slide-left"; // 向左滑动
-  // } else if (to.meta.index < from.meta.index) {
-  //   // 由次级到主级
-  //   console.log(2);
-  //   state.transitionName = "slide-right";
-  // } else {
-  //   state.transitionName = ""; // 同级无过渡效果
-  // }
-});
 </script>
 
 <style lang="less" scoped>
@@ -77,7 +61,8 @@ router.beforeEach((to, from) => {
     margin-left: 210px;
     transition: margin-left 0.2s;
     flex: 1;
-    min-height: calc(100vh - 86px);
+    min-height: 100vh;
+    transition: all 0.3s;
 
     .bottom-main-container {
       margin-top: 86px;
