@@ -87,7 +87,7 @@ export default {
 .top-header {
   flex: 0 0 40px;
   height: 40px;
-  padding: 0 15px;
+  padding: 0 16px;
   align-items: center;
   border-bottom: 1px solid @border-color-base;
 

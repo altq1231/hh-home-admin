@@ -152,7 +152,7 @@ const handleLogout = async () => {
     .trigger {
       height: 100%;
       flex: 0 0 40px;
-      padding: 15px 10px;
+      padding: 16px 10px;
       font-size: 20px;
       color: rgba(0, 0, 0, 0.45);
       transition: background-color 0.3s;
@@ -163,7 +163,7 @@ const handleLogout = async () => {
     }
 
     .center-breadcrumb {
-      padding: 0 15px;
+      padding: 0 16px;
       overflow: hidden;
       color: #97a8be;
     }

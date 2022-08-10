@@ -390,7 +390,7 @@ onBeforeUnmount(() => {
   .login-btn {
     height: 60px;
     margin-top: 30px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
     width: 100%;
     font-size: 20px;
     line-height: 50px;

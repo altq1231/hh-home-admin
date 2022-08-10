@@ -387,7 +387,7 @@ onMounted(async () => {
   min-height: calc(100vh - 144px);
 
   .home-header {
-    padding: 0 15px;
+    padding: 0 16px;
     background: #ffffff;
     flex: 0 0 102px;
     transition: all 0.3s;
@@ -401,7 +401,7 @@ onMounted(async () => {
     .center-container {
       transition: all 0.3s;
       .left-hello {
-        padding-left: 15px;
+        padding-left: 16px;
         flex: 0 0 auto;
         justify-content: center;
 
@@ -428,7 +428,7 @@ onMounted(async () => {
         height: 90px;
       }
       .weather-container {
-        padding-left: 15px;
+        padding-left: 16px;
         transition: all 0.3s;
 
         .weather {
@@ -509,7 +509,7 @@ onMounted(async () => {
   .card-title {
     height: 50px;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 16px;
     border-bottom: 1px solid @border-color-base;
 
     .title {
@@ -520,8 +520,8 @@ onMounted(async () => {
 
   .latest-developments {
     flex: 0 0 auto;
-    padding: 0 15px;
-    margin-top: 15px;
+    padding: 0 16px;
+    margin-top: 16px;
     transition: all 0.3s;
 
     .left-developments {
@@ -532,10 +532,10 @@ onMounted(async () => {
       }
       .no-developments {
         width: 100%;
-        padding: 15px;
+        padding: 16px;
         align-items: center;
         justify-content: center;
-        padding: 15px;
+        padding: 16px;
 
         .no-data-img {
           width: 120px;
@@ -546,12 +546,12 @@ onMounted(async () => {
           font-size: 14px;
           color: #999999;
           margin-bottom: 0;
-          margin-top: 15px;
+          margin-top: 16px;
         }
       }
 
       .developments-container {
-        padding: 15px;
+        padding: 16px;
         transition: all 0.2s;
         .developments-item {
           transition: all 0.2s;
@@ -569,7 +569,7 @@ onMounted(async () => {
           }
 
           .right-infos-container {
-            padding-left: 15px;
+            padding-left: 16px;
 
             .infos {
               font-size: 16px;
@@ -590,7 +590,7 @@ onMounted(async () => {
 
     .right-illustration {
       transition: all 0.3s;
-      margin-left: 15px;
+      margin-left: 16px;
       background-color: #ffffff;
       flex: 0 0 360px;
       background: url(../assets/avatar.gif) center no-repeat;
@@ -598,7 +598,7 @@ onMounted(async () => {
     }
   }
   .bottom-map {
-    margin: 15px 15px 0;
+    margin: 16px 16px 0;
     background: #ffffff;
     padding: 10px;
     border-radius: 2px;
@@ -620,7 +620,7 @@ onMounted(async () => {
         flex-direction: column;
 
         .left-hello {
-          padding: 15px 0;
+          padding: 16px 0;
           .user-info {
             text-align: center;
           }
@@ -643,7 +643,7 @@ onMounted(async () => {
 
       .right-illustration {
         margin-left: 0;
-        margin-top: 15px;
+        margin-top: 16px;
       }
     }
   }
