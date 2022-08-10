@@ -78,33 +78,43 @@
           <div class="fill-flex title">最新动态</div>
           <router-link to="/">查看更多</router-link>
         </div>
-        <div class="developments-container">
-          <div
-            v-if="operationRecords.length > 0"
-            class="developments-item flex-row"
-            v-for="(item, index) in operationRecords"
-            :key="'info' + index"
+        <div class="operation-records-container">
+          <!-- v-if="operationRecords.length > 0" -->
+          <transition-group
+            name="records-slide"
+            tag="div"
+            class="developments-container"
           >
-            <img class="type-img" :src="handleType(item)" />
-            <div class="flex-col fill-flex right-infos-container">
-              <div class="infos">
-                {{
-                  item.operationType +
-                  " " +
-                  item.manageType +
-                  " " +
-                  item.operationObj
-                }}
-              </div>
-              <div class="date">
-                {{ computedHowLongAgo(item.operationDate) }}
+            <div
+              class="developments-item flex-row"
+              v-for="(item, index) in operationRecords.slice(0, 6)"
+              :style="{ transitionDelay: index * 0.3 + 's' }"
+              :key="'info' + index"
+            >
+              <img class="type-img" :src="handleType(item)" />
+              <div class="flex-col fill-flex right-infos-container">
+                <div class="infos">
+                  {{
+                    item.operationType +
+                    " " +
+                    item.manageType +
+                    " " +
+                    item.operationObj
+                  }}
+                </div>
+                <div class="date">
+                  {{ computedHowLongAgo(item.operationDate) }}
+                </div>
               </div>
             </div>
-          </div>
-          <div class="no-developments flex-col" v-else>
-            <img class="no-data-img" src="../assets/web404.svg" />
-            <p class="no-data-text">暂无数据</p>
-          </div>
+            <div
+              class="no-developments flex-col"
+              v-if="operationRecords.length <= 0"
+            >
+              <img class="no-data-img" src="../assets/web404.svg" />
+              <p class="no-data-text">暂无数据</p>
+            </div>
+          </transition-group>
         </div>
       </div>
       <div class="right-illustration">
@@ -538,14 +548,20 @@ onMounted(async () => {
 
       .developments-container {
         padding: 15px;
+        transition: all 0.3s;
         .developments-item {
+          transition: all 0.3s;
           align-items: center;
           border-bottom: 1px solid @border-color-split;
           padding: 10px 0;
 
+          &:last-child {
+            border-bottom: none;
+          }
+
           .type-img {
-            flex: 0 0 36px;
-            width: 36px;
+            flex: 0 0 40px;
+            width: 40px;
           }
 
           .right-infos-container {
@@ -554,11 +570,14 @@ onMounted(async () => {
             .infos {
               font-size: 16px;
               font-weight: 700;
+              line-height: 26px;
             }
 
             .date {
               font-size: 14px;
               color: #999999;
+              line-height: 22px;
+              margin-top: 5px;
             }
           }
         }
@@ -568,7 +587,7 @@ onMounted(async () => {
     .right-illustration {
       margin-left: 15px;
       background-color: #ffffff;
-      flex: 0 0 300px;
+      flex: 0 0 360px;
       background: url(../assets/avatar.gif) center no-repeat;
       background-size: cover;
     }

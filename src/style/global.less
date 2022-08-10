@@ -145,6 +145,31 @@ body,
   opacity: 0;
 }
 
+.records-slide-enter-active,
+.records-slide-leave-active {
+  transition: all 0.3s;
+}
+
+.records-slide-enter-from {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+.records-slide-enter-to {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.records-slide-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.records-slide-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s ease;

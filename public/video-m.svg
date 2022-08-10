@@ -1,3 +1,9 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1660038605706" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20692" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css">@font-face { font-family: element-icons; src: url("chrome-extension://moombeodfomdpjnpocobemoiaemednkg/fonts/element-icons.woff") format("woff"), url("chrome-extension://moombeodfomdpjnpocobemoiaemednkg/fonts/element-icons.ttf ") format("truetype"); }
-@font-face { font-family: feedback-iconfont; src: url("//at.alicdn.com/t/font_1031158_u69w8yhxdu.woff2?t=1630033759944") format("woff2"), url("//at.alicdn.com/t/font_1031158_u69w8yhxdu.woff?t=1630033759944") format("woff"), url("//at.alicdn.com/t/font_1031158_u69w8yhxdu.ttf?t=1630033759944") format("truetype"); }
-</style></defs><path d="M896 0 128 0C57.6 0 0 57.6 0 128l0 768c0 70.4 57.6 128 128 128l768 0c70.4 0 128-57.6 128-128L1024 128C1024 57.6 966.4 0 896 0zM748.8 563.2l-339.2 198.4C371.2 780.8 320 755.2 320 710.4L320 313.6c0-44.8 51.2-76.8 89.6-51.2l339.2 198.4C787.2 480 787.2 544 748.8 563.2z" p-id="20693" fill="#1ba784"></path></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="240px" height="240px" viewBox="0 0 240 240" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>video</title>
+    <g id="video" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="video-m" transform="translate(20.000000, 20.000000)" fill="#1BA784" fill-rule="nonzero">
+            <path d="M175,0 L25,0 C11.25,0 0,11.25 0,25 L0,175 C0,188.75 11.25,200 25,200 L175,200 C188.75,200 200,188.75 200,175 L200,25 C200,11.25 188.75,0 175,0 Z M146.25,110 L80,148.75 C72.5,152.5 62.5,147.5 62.5,138.75 L62.5,61.25 C62.5,52.5 72.5,46.25 80,51.25 L146.25,90 C153.75,93.75 153.75,106.25 146.25,110 Z" id="形状"></path>
+        </g>
+    </g>
+</svg>
