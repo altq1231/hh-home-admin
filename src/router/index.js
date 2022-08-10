@@ -21,16 +21,34 @@ const routes = [
         component: () => import("../views/shop-manage/index.vue"),
       },
       {
+        path: "/goods-manage",
+        name: "goods-manage",
+        meta: { title: "商品管理" },
+        component: () => import("../views/shop-manage/goods-manage.vue"),
+      },
+      {
         path: "/video-dashboard",
         name: "video-dashboard",
         meta: { title: "视频库管理" },
         component: () => import("../views/video-manage/index.vue"),
       },
       {
+        path: "/video-manage",
+        name: "video-manage",
+        meta: { title: "视频管理" },
+        component: () => import("../views/video-manage/video-manage.vue"),
+      },
+      {
         path: "/music-dashboard",
         name: "music-dashboard",
         meta: { title: "曲库管理" },
         component: () => import("../views/music-manage/index.vue"),
+      },
+      {
+        path: "/music-manage",
+        name: "music-manage",
+        meta: { title: "音乐管理" },
+        component: () => import("../views/music-manage/music-manage.vue"),
       },
       {
         path: "/test",
