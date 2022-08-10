@@ -147,7 +147,7 @@ body,
 
 .records-slide-enter-active,
 .records-slide-leave-active {
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .records-slide-enter-from {
@@ -195,19 +195,29 @@ body,
 }
 
 /* fade-transform */
-.fade-transform-leave-active,
-.fade-transform-enter-active {
+.fade-transform-enter-active,
+.fade-transform-leave-active {
   transition: all 0.3s;
 }
 
-.fade-transform-enter {
+.fade-transform-enter-from {
+  transform: translateX(30px);
   opacity: 0;
-  transform: translateX(-30px);
+}
+
+.fade-transform-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.fade-transform-leave-from {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .fade-transform-leave-to {
+  transform: translateX(-30px);
   opacity: 0;
-  transform: translateX(30px);
 }
 
 .list-enter-active,

@@ -11,7 +11,7 @@
       </template>
       <span> 首页 </span>
     </a-menu-item>
-    <a-menu-item key="/shop-manage">
+    <a-menu-item key="/goods-manage">
       <template #icon>
         <shop-outlined />
       </template>

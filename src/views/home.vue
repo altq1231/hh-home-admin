@@ -21,7 +21,7 @@
             <div
               v-for="(weather, index) in weatherInfo.slice(0, 4)"
               class="weather flex-col"
-              :style="{ transitionDelay: index * 0.3 + 's' }"
+              :style="{ transitionDelay: index * 0.2 + 's' }"
               :key="weather.date"
             >
               <img
@@ -79,7 +79,6 @@
           <router-link to="/">查看更多</router-link>
         </div>
         <div class="operation-records-container">
-          <!-- v-if="operationRecords.length > 0" -->
           <transition-group
             name="records-slide"
             tag="div"
@@ -107,14 +106,14 @@
                 </div>
               </div>
             </div>
-            <div
-              class="no-developments flex-col"
-              v-if="operationRecords.length <= 0"
-            >
-              <img class="no-data-img" src="../assets/web404.svg" />
-              <p class="no-data-text">暂无数据</p>
-            </div>
           </transition-group>
+          <div
+            class="no-developments flex-col"
+            v-if="operationRecords.length <= 0"
+          >
+            <img class="no-data-img" src="../assets/web404.svg" />
+            <p class="no-data-text">暂无数据</p>
+          </div>
         </div>
       </div>
       <div class="right-illustration">
@@ -529,6 +528,7 @@ onMounted(async () => {
 
       .no-developments {
         width: 100%;
+        padding: 15px;
         align-items: center;
         justify-content: center;
         padding: 15px;
@@ -548,9 +548,9 @@ onMounted(async () => {
 
       .developments-container {
         padding: 15px;
-        transition: all 0.3s;
+        transition: all 0.2s;
         .developments-item {
-          transition: all 0.3s;
+          transition: all 0.2s;
           align-items: center;
           border-bottom: 1px solid @border-color-split;
           padding: 10px 0;

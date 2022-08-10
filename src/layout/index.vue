@@ -8,7 +8,7 @@
       <Head class="fixed-header" v-model:collapsed="collapsed"></Head>
       <a-layout-content class="bottom-main-container">
         <router-view v-slot="{ Component }">
-          <transition name="fade-transform" mode="out-in">
+          <transition name="fade-transform" mode="out-in" appear>
             <component :is="Component" />
           </transition>
         </router-view>
