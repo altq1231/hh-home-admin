@@ -80,15 +80,25 @@
         </div>
         <div class="developments-container">
           <div
-            v-if="developments.length > 0"
+            v-if="operationRecords.length > 0"
             class="developments-item flex-row"
-            v-for="(item, index) in developments"
+            v-for="(item, index) in operationRecords"
             :key="'info' + index"
           >
             <img class="type-img" :src="handleType(item)" />
             <div class="flex-col fill-flex right-infos-container">
-              <div class="infos">{{ item.infos }}</div>
-              <div class="date">{{ item.date }}</div>
+              <div class="infos">
+                {{
+                  item.operationType +
+                  " " +
+                  item.manageType +
+                  " " +
+                  item.operationObj
+                }}
+              </div>
+              <div class="date">
+                {{ computedHowLongAgo(item.operationDate) }}
+              </div>
             </div>
           </div>
           <div class="no-developments flex-col" v-else>
@@ -111,7 +121,13 @@
 import { ref, onMounted, computed } from "vue";
 import { pinyin } from "pinyin-pro";
 // @ts-ignore
-import { getWeather, getCityCode, getCityPosition } from "/@/service/help.js";
+import {
+  getWeather,
+  getCityCode,
+  getCityPosition,
+  getOperationRecord,
+  // @ts-ignore
+} from "/@/service/help.js";
 import {
   MenuOutlined,
   FileAddOutlined,
@@ -122,16 +138,39 @@ import { shallowRef } from "@vue/reactivity";
 import AMapLoader from "@amap/amap-jsapi-loader";
 // @ts-ignore
 import NumScroll from "/@/components/num-scroll.vue";
+// @ts-ignore
+import moment from "moment";
+
+moment.updateLocale("en", {
+  relativeTime: {
+    future: "%s之后",
+    past: "%s之前",
+    s: "几秒钟",
+    ss: "%d",
+    m: "1分钟",
+    mm: "%d分钟",
+    h: "1小时",
+    hh: "%d小时",
+    d: "1天",
+    dd: "%d天",
+    M: "1个月",
+    MM: "%d月",
+    y: "1年",
+    yy: "%d年",
+  },
+});
 
 interface WeatherInfo {
   date: string;
   dayweather: string;
 }
 
-interface DevelopmentsItem {
-  date: string;
-  infos: string;
-  type: "shop" | "video" | "music";
+interface OperationRecordItem {
+  userId: String;
+  operationDate: Date;
+  manageType: "shop" | "video" | "music";
+  operationType: "add" | "delete" | "update";
+  operationObj: String;
 }
 
 const weatherArr = [
@@ -199,7 +238,7 @@ const timeHello = computed(() => {
 });
 const username = sessionStorage.getItem("username");
 const weatherInfo = ref([] as WeatherInfo[]);
-const developments = ref([] as DevelopmentsItem[]);
+const operationRecords = ref([] as OperationRecordItem[]);
 
 const num = ref("0");
 
@@ -208,14 +247,18 @@ const handleAbsoluteData = (aData: any) => {
   return JSON.stringify(aData);
 };
 
-const handleType = (item: DevelopmentsItem) => {
-  if (item.type === "music") {
+const handleType = (item: OperationRecordItem) => {
+  if (item.manageType === "music") {
     return "/music-m.svg";
-  } else if (item.type === "video") {
+  } else if (item.manageType === "video") {
     return "/video-m.svg";
   } else {
     return "/goods-m.svg";
   }
+};
+
+const computedHowLongAgo = (time: Date) => {
+  return moment().to(moment(time).format("YYYY-MM-DD HH:mm:ss"));
 };
 
 const city = ref("");
@@ -320,28 +363,9 @@ onMounted(async () => {
   weatherInfo.value = tempInfo.forecasts[0].casts;
   await initMap();
 
-  developments.value = [
-    {
-      date: "2018-8-1",
-      infos: "上架了雨伞",
-      type: "shop",
-    },
-    {
-      date: "2018-8-1",
-      infos: "新增了<<112.mp4>>",
-      type: "video",
-    },
-    {
-      date: "2018-8-1",
-      infos: "上架了杯子",
-      type: "shop",
-    },
-    {
-      date: "2018-8-1",
-      infos: "新增了<<我是如此相信>>",
-      type: "music",
-    },
-  ];
+  const recordsData = await getOperationRecord(sessionStorage.getItem("_id"));
+
+  operationRecords.value = recordsData.data;
 
   setTimeout(() => {
     num.value = "100";

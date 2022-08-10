@@ -23,3 +23,7 @@ export function getCityPosition() {
     `https://restapi.amap.com/v3/ip?key=8c16ea4a02d8427bc6d645968d2e2171`
   );
 }
+// 获取操作记录
+export function getOperationRecord(userId) {
+  return axios.get(`/or/getSelfRecord?userId=${userId}`);
+}
