@@ -12,18 +12,93 @@
           tableLayout="fixed"
           bordered
           :columns="columns"
-          :data-source="data"
+          :data-source="dataSource"
           :pagination="{ pageSize: 50 }"
           :scroll="{ y: tableHeight, x: 1260 }"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'action'">
+            <template v-if="column.key === 'goodsStatus'">
+              <a-tag :color="record.goodsStatus === 1 ? 'success' : 'error'">
+                {{ record.goodsStatus === 1 ? "销售中" : "已下架" }}
+              </a-tag>
+            </template>
+            <template v-else-if="column.key === 'goodsName'">
+              <a-input
+                v-if="editableData[record.key]"
+                v-model:value="editableData[record.key].goodsName"
+              />
+              <template v-else>
+                {{ record.goodsName }}
+              </template>
+            </template>
+            <template v-else-if="column.key === 'goodsImg'">
+              <a-input
+                v-if="editableData[record.key]"
+                v-model:value="editableData[record.key].goodsImg"
+              />
+              <template v-else>
+                {{ record.goodsImg }}
+              </template>
+            </template>
+            <template v-else-if="column.key === 'goodsStock'">
+              <a-input
+                v-if="editableData[record.key]"
+                v-model:value="editableData[record.key].goodsStock"
+              />
+              <template v-else>
+                {{ record.goodsStock }}
+              </template>
+            </template>
+            <template v-else-if="column.key === 'goodsPrice'">
+              <a-input
+                v-if="editableData[record.key]"
+                v-model:value="editableData[record.key].goodsPrice"
+              />
+              <template v-else>
+                {{ record.goodsPrice }}
+              </template>
+            </template>
+            <template v-else-if="column.key === 'goodsDesc'">
+              <a-input
+                v-if="editableData[record.key]"
+                v-model:value="editableData[record.key].goodsDesc"
+              />
+              <template v-else>
+                {{ record.goodsDesc }}
+              </template>
+            </template>
+            <template v-else-if="column.key === 'action'">
               <a-space :size="16">
-                <a>修改</a>
-                <a>删除</a>
-                <a>
-                  {{ record.shopStatus === 1 ? "下架" : "上架" }}
-                </a>
+                <template v-if="editableData[record.key]">
+                  <a-popconfirm
+                    title="确认修改?"
+                    @confirm="confirmSave(record.key)"
+                  >
+                    <a>确认</a>
+                  </a-popconfirm>
+                  <a @click="cancelEdit(record.key)">取消</a>
+                </template>
+                <template v-else>
+                  <a @click="handleModify(record.key)">修改</a>
+                  <a-popconfirm
+                    :title="`确认删除 ${record.goodsName} ?`"
+                    @confirm="handleDelete(record.key)"
+                  >
+                    <a>删除</a>
+                  </a-popconfirm>
+                  <a-popconfirm
+                    :title="
+                      record.goodsStatus === 1
+                        ? `确认下架 ${record.goodsName} ?`
+                        : `确认上架 ${record.goodsName} ?`
+                    "
+                    @confirm="confirmShelves(record.key)"
+                  >
+                    <a>
+                      {{ record.goodsStatus === 1 ? "下架" : "上架" }}
+                    </a>
+                  </a-popconfirm>
+                </template>
               </a-space>
             </template>
           </template>
@@ -33,6 +108,7 @@
     <a-modal
       v-model:visible="modalVisible"
       title="Basic Modal"
+      centered
       @ok="handleModalOk"
     >
       <p>Some contents...</p>
@@ -43,45 +119,52 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-ignore
+import { cloneDeep } from "lodash-es";
 import { PlusOutlined } from "@ant-design/icons-vue";
-import { onMounted, onBeforeUnmount, ref, unref, Ref } from "vue";
+import { onMounted, onBeforeUnmount, ref, unref, reactive } from "vue";
+import type { UnwrapRef } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 const columns = [
   {
     title: "商品编号",
     dataIndex: "_id",
+    key: "_id",
     width: 230,
     fixed: "left",
   },
   {
     title: "商品名称",
     dataIndex: "goodsName",
-    width: 150,
+    key: "goodsName",
+    width: 220,
     fixed: "left",
   },
   {
     title: "商品图片",
     dataIndex: "goodsImg",
-    width: 140,
+    key: "goodsImg",
   },
   {
     title: "商品库存",
     dataIndex: "goodsStock",
-    width: 120,
+    key: "goodsStock",
   },
   {
     title: "商品售价",
     dataIndex: "goodsPrice",
-    width: 120,
+    key: "goodsPrice",
   },
   {
     title: "商品状态",
     dataIndex: "goodsStatus",
-    width: 120,
+    key: "goodsStatus",
+    width: 150,
   },
   {
     title: "商品介绍",
     dataIndex: "goodsDesc",
+    key: "goodsDesc",
   },
   {
     title: "操作",
@@ -90,13 +173,32 @@ const columns = [
     fixed: "right",
   },
 ];
-const data = [...Array(20)].map((_, i) => ({
-  key: i,
+
+interface DataItem {
+  key: number | string;
+  goodsName: string;
+  _id: number | string;
+  goodsDesc: string;
+  goodsStock: number;
+  goodsPrice: number | string;
+  goodsStatus: number;
+  goodsImg: string;
+}
+
+const data: DataItem[] = [...Array(20)].map((_, i) => ({
+  key: i.toString(),
   goodsName: `Edward King ${i}`,
   _id: i + 1001,
-  address: `London, Park Lane no. ${i}`,
   goodsDesc: `商品 ${i}`,
+  goodsStock: i,
+  goodsPrice: i + 11,
+  goodsStatus: i % 2 == 0 ? 1 : 2,
+  goodsImg: "111",
 }));
+
+const dataSource = ref(data);
+const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
+
 const goodsTableRef = ref(null);
 const tableHeight = ref(400);
 const modalVisible = ref(false);
@@ -107,6 +209,34 @@ const addGoods = () => {
 
 const handleModalOk = () => {
   modalVisible.value = false;
+};
+
+const handleModify = (key: string) => {
+  console.log(key);
+  editableData[key] = cloneDeep(
+    dataSource.value.filter((item) => key === item.key)[0]
+  );
+};
+
+const confirmSave = (key: string) => {
+  console.log(key);
+  Object.assign(
+    dataSource.value.filter((item) => key === item.key)[0],
+    editableData[key]
+  );
+  delete editableData[key];
+};
+
+const cancelEdit = (key: string) => {
+  delete editableData[key];
+};
+
+const handleDelete = (key: string) => {
+  console.log(key);
+};
+
+const confirmShelves = (key: string) => {
+  console.log(key);
 };
 
 const getTableHeight = () => {
