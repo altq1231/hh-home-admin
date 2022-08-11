@@ -51,4 +51,27 @@ function getElementViewPosition(element: any) {
   return { x: left, y: right };
 }
 
-export { getDragMoveTarget, getElementPagePosition, getElementViewPosition };
+const isAudio = (path: any) => {
+  return /\.(opus|flac|webm|weba|wav|ogg|m4a|mp3|oga|mid|amr|aiff|wma|au|aac)/.test(
+    path
+  );
+};
+
+const isVideo = (path: any) => {
+  return /\.(mp4|avi|wmv|mpg|mpeg|mov|rm|ram|swf|flv)/.test(path);
+};
+
+const isImage = (path: any) => {
+  return /\.(xbm|tif|pjp|svgz|jpg|jpeg|ico|tiff|gif|svg|jfif|webp|png|bmp|pjpeg|avif)/.test(
+    path
+  );
+};
+
+export {
+  isImage,
+  isVideo,
+  isAudio,
+  getDragMoveTarget,
+  getElementPagePosition,
+  getElementViewPosition,
+};

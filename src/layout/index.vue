@@ -33,14 +33,13 @@ const collapsed = ref<boolean>(false);
 <style lang="less" scoped>
 .basic-layout {
   width: 100%;
-  &.ant-layout {
-    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
-  }
+  background-color: transparent;
 
   .inner-layout {
     margin-left: 210px;
     transition: margin-left 0.2s;
     flex: 1;
+    background-color: transparent;
 
     .bottom-main-container {
       margin-top: 86px;
@@ -59,6 +58,7 @@ const collapsed = ref<boolean>(false);
     height: 18px;
     margin-top: 20px;
     margin-bottom: 20px;
+    background-color: transparent;
   }
 }
 </style>
