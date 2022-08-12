@@ -40,7 +40,7 @@
             </template>
             <template v-else-if="column.key === 'action'">
               <a-space :size="16">
-                <a @click="handleModify(record.key)">修改</a>
+                <a @click="handleModify(record._id)">修改</a>
                 <a-popconfirm
                   :title="`确认删除 ${record.goodsName} ?`"
                   @confirm="handleDelete(record.key)"
@@ -65,34 +65,7 @@
         </a-table>
       </div>
     </div>
-    <a-modal
-      v-model:visible="modalVisible"
-      title="Basic Modal"
-      centered
-      @ok="handleModalOk"
-    >
-      <a-upload
-        v-model:file-list="fileList"
-        :name="fileType"
-        list-type="picture-card"
-        class="avatar-uploader"
-        :show-upload-list="false"
-        :max-count="1"
-        action="http://10.8.102.12:3301/uploadImageOrVideo"
-        :before-upload="beforeUpload"
-        @change="handleChange"
-      >
-        <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-        <div v-else>
-          <loading-outlined v-if="loading"></loading-outlined>
-          <plus-outlined v-else></plus-outlined>
-          <div class="ant-upload-text">上传</div>
-        </div>
-      </a-upload>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-    </a-modal>
+    <AddGoods ref="addGoodsRef" :type="type"></AddGoods>
   </div>
 </template>
 
@@ -117,6 +90,9 @@ import type { UnwrapRef } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import { message } from "ant-design-vue";
 import { isVideo, isImage } from "../../utils/help";
+// @ts-ignore
+import AddGoods from "./components/add-goods.vue";
+
 const columns = [
   {
     title: "商品编号",
@@ -200,6 +176,7 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
   console.log("selectedRowKeys changed: ", selectedRowKeys);
   state.selectedRowKeys = selectedRowKeys;
 };
+const type = ref("add");
 
 const data: DataItem[] = [...Array(20)].map((_, i) => ({
   key: i.toString(),
@@ -218,92 +195,28 @@ const data: DataItem[] = [...Array(20)].map((_, i) => ({
 }));
 
 const dataSource = ref(data);
-const editableData: UnwrapRef<Record<string, DataItem>> = reactive({});
 
 const goodsTableRef = ref(null);
+const addGoodsRef = ref<any>(null);
 const tableHeight = ref(400);
-const modalVisible = ref(false);
-const fileList = ref([]);
-const loading = ref<boolean>(false);
-const imageUrl = ref<string>("");
-const fileType = ref("images");
 
-const getBase64 = (img: Blob, callback: (base64Url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-};
-
-const handleChange = (info: UploadChangeParam) => {
-  if (info.file.status === "uploading") {
-    loading.value = true;
-    return;
-  }
-  if (info.file.status === "done") {
-    // Get this url from response in real world.
-    // @ts-ignore
-    getBase64(info.file.originFileObj, (base64Url: string) => {
-      imageUrl.value = base64Url;
-      loading.value = false;
-    });
-  }
-  if (info.file.status === "error") {
-    loading.value = false;
-    message.error("upload error");
-  }
-};
-
-// @ts-ignore
-const beforeUpload = (file: UploadProps["fileList"][number]) => {
-  console.log(file, isVideo(file.name));
-
-  const isImageOrVideo = isImage(file.name) && isVideo(file.name);
-  if (!isImageOrVideo) {
-    message.error("您只能上传图片/视频文件!");
-  }
-
-  const isLt200M = file.size / 1024 / 1024 < 200;
-  if (!isLt200M) {
-    message.error("图像/视频必须小于2MB!");
-  }
-  return isImageOrVideo && isLt200M;
+const handleModify = (key: string) => {
+  addGoodsRef.value.openModal(key);
+  type.value = "edit";
 };
 
 const addGoods = () => {
-  modalVisible.value = true;
-};
-
-const handleModalOk = () => {
-  modalVisible.value = false;
-};
-
-const handleModify = (key: string) => {
-  console.log(key);
-  editableData[key] = cloneDeep(
-    dataSource.value.filter((item) => key === item.key)[0]
-  );
-};
-
-const confirmSave = (key: string) => {
-  console.log(key);
-  Object.assign(
-    dataSource.value.filter((item) => key === item.key)[0],
-    editableData[key]
-  );
-  delete editableData[key];
-};
-
-const cancelEdit = (key: string) => {
-  delete editableData[key];
+  // console.log(addGoodsRef.value);
+  addGoodsRef.value.openModal();
 };
 
 const handleDelete = (key: string) => {
-  console.log(key);
+  // console.log(key);
   dataSource.value = dataSource.value.filter((item) => item.key !== key);
 };
 
 const confirmShelves = (key: string) => {
-  console.log(key);
+  // console.log(key);
   dataSource.value = dataSource.value.map((item) => {
     if (item.key === key) {
       if (item.goodsStatus === 1) {
