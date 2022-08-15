@@ -15,7 +15,7 @@
     ></video>
     <div class="actions-container flex-row">
       <a class="img-action" @click="handleShow"> <eye-outlined /></a>
-      <a class="img-action"> <delete-outlined /></a>
+      <a class="img-action" @click="handleDelete"> <delete-outlined /></a>
     </div>
   </div>
   <a-modal
@@ -52,6 +52,11 @@ const props = defineProps({
     default: {},
   },
 });
+
+console.log(props.itemInfo);
+
+const emits = defineEmits(["delete"]);
+
 const previewVisible = ref(false);
 
 const handleShow = () => {
@@ -61,6 +66,10 @@ const handleShow = () => {
 const handleCancel = () => {
   previewVisible.value = false;
 };
+
+const handleDelete = () => {
+  emits("delete", props.itemInfo.file);
+};
 </script>
 <style lang="less" scoped>
 .preview-container {
@@ -69,9 +78,7 @@ const handleCancel = () => {
   width: 100px;
   height: 100px;
   position: relative;
-  & + .preview-container {
-    margin-left: 12px;
-  }
+  margin-right: 12px;
 
   .thumbnail-img {
     position: absolute;

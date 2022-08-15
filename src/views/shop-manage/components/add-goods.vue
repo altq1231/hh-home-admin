@@ -141,7 +141,8 @@
               <div class="flex-row img-container">
                 <PreImgVideo
                   v-for="(file, index) in fileList"
-                  :item-info="file?.response?.data"
+                  :itemInfo="{ file, ...file?.response?.data }"
+                  @delete="handleFileDelete"
                   :key="'file' + index"
                 ></PreImgVideo>
                 <a-upload
@@ -174,7 +175,7 @@
               name="goodsDetails"
               :colon="false"
             >
-              <BasicEditor></BasicEditor>
+              <BasicEditor v-if="modalVisible"></BasicEditor>
             </a-form-item>
           </a-col>
         </a-row>
@@ -220,11 +221,6 @@ const loading = ref<boolean>(false);
 const fileList = ref<any>([]);
 const fileType = ref("images");
 const modalVisible = ref<boolean>(false);
-const itemInfo = ref({
-  type: "image",
-  path: "",
-  name: "",
-});
 
 const openModal = (id: string) => {
   modalVisible.value = true;
@@ -299,17 +295,12 @@ const handleChange = (info: UploadChangeParam) => {
   if (info.file.status === "done") {
     // Get this url from response in real world.
     console.log(info.file, fileList.value);
-    itemInfo.value = info.file.response.data;
-    // itemInfo.value.name = info.file.name;
-    // itemInfo.value.type = fileType.value;
     // if (fileType.value === "images") {
     //   // @ts-ignore
     //   getBase64(info.file.originFileObj, (base64Url: string) => {
-    //     itemInfo.value.path = base64Url;
     loading.value = false;
     //   });
     // } else {
-    //   itemInfo.value = info.file.response.data;
     // }
   }
   if (info.file.status === "error") {
@@ -342,15 +333,16 @@ const handleInfo = (file: any) => {
 
   return file.response.data;
 };
+
+const handleFileDelete = (file: any) => {
+  fileList.value = fileList.value.filter((item: any) => item.uid !== file.uid);
+};
 </script>
 <style lang="less">
 .add-goods {
   .pre-item {
     margin-right: 12px;
     margin-bottom: 12px;
-  }
-  .preview-container + .img-uploader {
-    margin-left: 12px;
   }
 
   .ant-input-number,
@@ -362,6 +354,15 @@ const handleInfo = (file: any) => {
     margin: 0;
     width: 100px;
     height: 100px;
+  }
+
+  .img-container {
+    flex-wrap: wrap;
+
+    .ant-upload-picture-card-wrapper {
+      flex: 0 0 100px;
+      width: 100px;
+    }
   }
 }
 

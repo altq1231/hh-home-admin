@@ -235,6 +235,7 @@ const batchDelete = () => {
   dataSource.value = dataSource.value.filter(
     (item) => !state.selectedRowKeys.includes(item.key)
   );
+  state.selectedRowKeys = [];
 };
 
 const getTableHeight = () => {
