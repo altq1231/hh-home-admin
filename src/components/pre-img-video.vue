@@ -9,6 +9,7 @@
       class="thumbnail-img"
       v-else
       autoplay
+      loop
       muted
       :src="props.itemInfo.path"
     ></video>
@@ -35,6 +36,7 @@
       class="pre-img"
       v-else
       autoplay
+      loop
       muted
       :src="props.itemInfo.path"
     ></video>

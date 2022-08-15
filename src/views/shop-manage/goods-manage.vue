@@ -207,6 +207,7 @@ const handleModify = (key: string) => {
 
 const addGoods = () => {
   // console.log(addGoodsRef.value);
+  type.value = "add";
   addGoodsRef.value.openModal();
 };
 
