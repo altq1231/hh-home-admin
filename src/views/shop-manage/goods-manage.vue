@@ -94,6 +94,7 @@ import { isVideo, isImage } from "../../utils/help";
 import AddGoods from "./components/add-goods.vue";
 // @ts-ignore
 import SocketClient from "../../service/websocket.js";
+const socketIo: any = ref(null);
 
 const columns = [
   {
@@ -255,20 +256,18 @@ onMounted(async () => {
   await getTableHeight();
   window.addEventListener("resize", handleSize);
 
-  const socketClient: any = new SocketClient().connect();
+  socketIo.value = new SocketClient();
+  socketIo.value.connect();
+  const { client } = socketIo.value;
+  console.log(client);
 
-  socketClient
-    .then((res: any) => {
-      res.on("open", (data: any) => {
-        // console.log("客户端id", res.id); // x8WIv7-mJelg7on_ALbx
-        console.log("客户端接收服务器发送的消息", data);
-      });
-    })
-    .catch((e: any) => {
-      console.log("websocket connect error", e);
-    });
+  client.on("open", (data: any) => {
+    // console.log("客户端id", res.id); // x8WIv7-mJelg7on_ALbx
+    console.log("客户端接收服务器发送的消息", data);
+  });
 });
 onBeforeUnmount(() => {
+  socketIo.value.disconnect();
   window.removeEventListener("resize", handleSize);
 });
 </script>
