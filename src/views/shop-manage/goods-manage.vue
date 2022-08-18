@@ -92,6 +92,8 @@ import { message } from "ant-design-vue";
 import { isVideo, isImage } from "../../utils/help";
 // @ts-ignore
 import AddGoods from "./components/add-goods.vue";
+// @ts-ignore
+import SocketClient from "../../service/websocket.js";
 
 const columns = [
   {
@@ -252,6 +254,19 @@ const handleSize = useDebounceFn(getTableHeight, 200);
 onMounted(async () => {
   await getTableHeight();
   window.addEventListener("resize", handleSize);
+
+  const socketClient: any = new SocketClient().connect();
+
+  socketClient
+    .then((res: any) => {
+      res.on("open", (data: any) => {
+        // console.log("客户端id", res.id); // x8WIv7-mJelg7on_ALbx
+        console.log("客户端接收服务器发送的消息", data);
+      });
+    })
+    .catch((e: any) => {
+      console.log("websocket connect error", e);
+    });
 });
 onBeforeUnmount(() => {
   window.removeEventListener("resize", handleSize);
