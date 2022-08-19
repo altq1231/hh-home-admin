@@ -145,6 +145,40 @@ body,
   opacity: 0;
 }
 
+.message-slide-enter-active,
+.message-slide-leave-active {
+  transition: all 0.3s;
+}
+
+.message-slide-leave-to,
+.message-slide-enter-from {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.message-slide-enter-to {
+  transition-delay: 0.1s;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.message-slide-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.message-slide-enter-to.message-div {
+  transition-delay: 0.1s;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.message-slide-leave-to.message-div,
+.message-slide-enter-from.message-div {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+
 .records-slide-enter-active,
 .records-slide-leave-active {
   transition: all 0.2s;
