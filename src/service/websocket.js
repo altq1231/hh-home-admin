@@ -23,6 +23,17 @@ export default class SocketClient {
         path: path,
         transports: ['websocket'],
       });
+
+
+      this.client.on('connect', () => {
+        if (this.client.connect) {
+          resolve(this.client);
+        } else {
+          reject(this.client);
+        }
+      });
+    }).catch(e => {
+      console.log(e);
     });
   };
 

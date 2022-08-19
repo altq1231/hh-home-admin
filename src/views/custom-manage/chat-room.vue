@@ -1,7 +1,7 @@
 <template>
   <div class="chat-room-page">
     <div class="test-ip-address">
-      Welcome: <span id="ipAddress">- - - -</span>
+      Welcome: <span id="ipAddress">-111 - - -</span>
     </div>
     <div class="chat-box">
       <div class="left-member flex-col">
@@ -9,9 +9,9 @@
         <ul class="member-ul fill-flex" id="memberUl">
           <li
             class="member-li"
-            :class="{ active: selectUser === user.id }"
             v-for="user in userList"
-            @click="handleUserSelect(user.id)"
+            :class="{ active: selectUser.id === user.id }"
+            @click="handleUserSelect(user)"
           >
             <img class="avatar" :src="user.avatar" />
             <div class="right-info">
@@ -91,13 +91,18 @@ import {
   toRefs,
   reactive,
   computed,
+  onBeforeUnmount,
 } from "vue";
 import { message } from "ant-design-vue";
+// @ts-ignore
+import SocketClient from "../../service/websocket.js";
+import io from "socket.io-client";
+let socketIo = null;
 
 const mainRef = ref(null);
 const state = reactive({
   userList: [],
-  selectUser: null,
+  selectUser: { id: null },
   messageData: [],
   inputVal: "",
 });
@@ -120,22 +125,27 @@ const carriageReturn = (event) => {
 };
 
 const handleUserSelect = (key) => {
-  if (key === selectUser.value) {
-    selectUser.value = null;
+  // console.log(key);
+  if (key.id === selectUser.value.id) {
+    selectUser.value = { id: null };
   } else {
     selectUser.value = key;
   }
 };
 
 const handleAddMessage = () => {
-  console.log(inputVal.value === "");
+  const info = {
+    sendId: socketIo.id, // 发送者id
+    id: selectUser.value.id, // 接收者id
+    userName: sessionStorage.getItem("username"),
+    img: "/avatar.gif", // 发送者头像
+    msg: inputVal.value, // 发送内容
+    msgType: "self",
+  };
+  console.log("发送消息", info);
   if (inputVal.value && inputVal.value !== "\n" && inputVal.value.length > 0) {
-    messageData.value.push({
-      msgType: "self",
-      msg: inputVal.value,
-      username: "self",
-      ipAddress: "10.8.102.12",
-    });
+    messageData.value.push(info);
+    socketIo.emit("sendMsg", info);
     scrollToBottom();
     inputVal.value = "";
   } else {
@@ -154,7 +164,29 @@ const addMessage = () => {
   scrollToBottom();
 };
 
-onMounted(() => {
+const initSocket = () => {
+  let url = null;
+  let path = null;
+  if (!url) url = import.meta.env.VITE_DEFAULT_SOCKET_URL;
+  if (!path) path = import.meta.env.VITE_DEFAULT_SOCKET_PATH;
+
+  socketIo = io(url, {
+    path: path,
+    transports: ["websocket"],
+  });
+
+  socketIo.on("connect", (res) => {
+    console.log(socketIo);
+
+    socketIo.emit("login", {
+      id: socketIo.id,
+      username: sessionStorage.getItem("username"),
+      avatar: "/avatar.gif",
+    });
+  });
+};
+
+onMounted(async () => {
   let arrData = [];
   let msgData = [];
   for (let index = 0; index < 20; index++) {
@@ -171,10 +203,37 @@ onMounted(() => {
       ipAddress: "10.8.102.12",
     });
   }
-  userList.value = arrData;
-  messageData.value = msgData;
+  // userList.value = arrData;
+  // messageData.value = msgData;
 
   scrollToBottom();
+  await initSocket();
+
+  socketIo.on("open", (data) => {
+    // console.log("客户端id", client.id); // x8WIv7-mJelg7on_ALbx
+    console.log("客户端接收服务器发送的消息", data);
+  });
+
+  console.log(socketIo);
+
+  socketIo.on("userList", (data) => {
+    console.log(data);
+    userList.value = data;
+  });
+
+  socketIo.on("receiveMsg", (data) => {
+    console.log("接受消息", data);
+    data.msgType = "server";
+    messageData.value.push(data);
+  });
+
+  socketIo.on("quit", (id) => {
+    userList.value = userList.value.filter((item) => item.id != id);
+  });
+});
+
+onBeforeUnmount(() => {
+  socketIo.disconnect();
 });
 </script>
 
