@@ -70,8 +70,6 @@
 </template>
 
 <script lang="ts" setup>
-// @ts-ignore
-import { cloneDeep } from "lodash-es";
 import {
   PlusOutlined,
   LoadingOutlined,
@@ -249,8 +247,8 @@ const getTableHeight = () => {
 
 const handleSize = useDebounceFn(getTableHeight, 200);
 
-onMounted(async () => {
-  await getTableHeight();
+onMounted(() => {
+  getTableHeight();
   window.addEventListener("resize", handleSize);
 });
 onBeforeUnmount(() => {

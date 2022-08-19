@@ -131,6 +131,7 @@ const handleUserSelect = (key) => {
   } else {
     selectUser.value = key;
   }
+  messageData.value = [];
 };
 
 const handleAddMessage = () => {
