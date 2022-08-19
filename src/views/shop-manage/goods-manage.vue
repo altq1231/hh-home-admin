@@ -247,8 +247,8 @@ const getTableHeight = () => {
 
 const handleSize = useDebounceFn(getTableHeight, 200);
 
-onMounted(() => {
-  getTableHeight();
+onMounted(async () => {
+  await getTableHeight();
   window.addEventListener("resize", handleSize);
 });
 onBeforeUnmount(() => {
