@@ -134,12 +134,13 @@
             <a-form-item
               :labelCol="{ span: 3 }"
               :wrapperCol="{ span: 21 }"
-              label="商品图片"
-              name="goodsImg"
+              label="商品图片/视频"
+              name="goodsMedia"
               :colon="false"
             >
               <div class="flex-row img-container">
                 <PreImgVideo
+                  v-if="fileList && fileList.length > 0"
                   v-for="(file, index) in fileList"
                   :itemInfo="{ file, ...file?.response?.data }"
                   @delete="handleFileDelete"
@@ -175,7 +176,10 @@
               name="goodsDetails"
               :colon="false"
             >
-              <BasicEditor v-if="modalVisible"></BasicEditor>
+              <BasicEditor
+                v-model:editorValue="formState.goodsDetails"
+                v-if="modalVisible"
+              ></BasicEditor>
             </a-form-item>
           </a-col>
         </a-row>
@@ -191,7 +195,7 @@ import {
   LoadingOutlined,
   DeleteOutlined,
 } from "@ant-design/icons-vue";
-import { computed, onBeforeUnmount, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { isImage, isVideo } from "/@/utils/help";
 // @ts-ignore
 import PreImgVideo from "/@/components/pre-img-video.vue";
@@ -205,10 +209,10 @@ interface FormState {
   goodsStock: number | null;
   goodsPrice: number | null;
   goodsDesc: string;
-  goodsCategory: string;
   sellingPrice: number | null;
   goodsTags: string[];
   goodsDetails: string;
+  goodsMedia: object[];
 }
 
 const props = defineProps({
@@ -217,6 +221,7 @@ const props = defineProps({
     default: "add",
   },
 });
+
 const loading = ref<boolean>(false);
 const fileList = ref<any>([]);
 const fileType = ref("images");
@@ -245,10 +250,10 @@ const formState = reactive<FormState>({
   goodsStock: null,
   goodsPrice: null,
   goodsDesc: "",
-  goodsCategory: "food",
   sellingPrice: null,
   goodsTags: [],
-  goodsDetails: "",
+  goodsDetails: "这是一段描述",
+  goodsMedia: [],
 });
 
 const onFinish = (values: any) => {
@@ -265,7 +270,7 @@ const handleModalOk = async () => {
   await formRef.value
     .validate()
     .then(() => {
-      console.log("values");
+      console.log("values", formState, fileList);
     })
     .catch((error) => {
       console.log("error", error);
@@ -292,21 +297,32 @@ const handleChange = (info: UploadChangeParam) => {
     loading.value = true;
     return;
   }
+
   if (info.file.status === "done") {
-    // Get this url from response in real world.
     console.log(info.file, fileList.value);
-    // if (fileType.value === "images") {
-    //   // @ts-ignore
-    //   getBase64(info.file.originFileObj, (base64Url: string) => {
     loading.value = false;
-    //   });
-    // } else {
-    // }
   }
+
   if (info.file.status === "error") {
     loading.value = false;
     message.error("upload error");
   }
+
+  let resFileList: any = [];
+  let responseList: any = [];
+
+  info.fileList.map((file: any) => {
+    const isLt200M = file.size / 1024 / 1024 < 200;
+    if ((isImage(file.name) && isLt200M) || (isVideo(file.name) && isLt200M)) {
+      resFileList.push(file);
+      if (file.response.state) {
+        responseList.push(file.response.data);
+      }
+    }
+  });
+
+  fileList.value = resFileList;
+  formState.goodsMedia = responseList;
 };
 
 // @ts-ignore
@@ -329,7 +345,7 @@ const beforeUpload = (file: UploadProps["fileList"][number]) => {
 };
 
 const handleInfo = (file: any) => {
-  console.log(file.response);
+  console.log("handleInfo", file.response);
 
   return file.response.data;
 };

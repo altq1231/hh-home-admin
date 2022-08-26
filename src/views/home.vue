@@ -360,16 +360,20 @@ const initMap = () => {
 onMounted(async () => {
   const cityPosition: any = await getCityPosition();
 
-  const adCode: any = await getCityCode(cityPosition.city);
-  let tempInfo: any;
+  if (cityPosition.status === "1") {
+    const adCode: any = await getCityCode(cityPosition.city);
+    let tempInfo: any;
+    console.log(cityPosition, adCode);
 
-  if (adCode.state) {
-    tempInfo = await getWeather(adCode.data.adCode);
-  } else {
-    tempInfo = await getWeather(110000);
+    if (adCode.state) {
+      tempInfo = await getWeather(adCode.data.adCode);
+    } else {
+      tempInfo = await getWeather(110000);
+    }
+
+    weatherInfo.value = tempInfo.forecasts[0].casts;
   }
 
-  weatherInfo.value = tempInfo.forecasts[0].casts;
   await initMap();
 
   const recordsData = await getOperationRecord(sessionStorage.getItem("_id"));
