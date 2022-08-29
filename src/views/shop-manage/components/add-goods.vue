@@ -4,6 +4,7 @@
     v-model:visible="modalVisible"
     :title="props.type === 'add' ? '添加商品' : '修改商品'"
     :maskClosable="false"
+    :keyboard="false"
     :width="1000"
     @close="handleModalCancel"
   >

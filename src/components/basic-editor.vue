@@ -8,6 +8,7 @@
     >
     </WangToolbar>
     <Editor
+      style="height: 600px"
       class="editor"
       :defaultConfig="editorConfig"
       mode="default"
@@ -61,10 +62,6 @@ const handleChange = (editor) => {
 
   .editor-toolbar {
     border-bottom: 1px solid @border-color-base;
-  }
-
-  .editor {
-    min-height: 600px;
   }
 
   &.w-e-full-screen-container {
