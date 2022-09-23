@@ -216,6 +216,8 @@ const handleWeather = (dayWeather: string) => {
 
   if (weatherArr.includes(pinyinAll)) {
     temp = `/weather/${pinyinAll}.svg`;
+  } else if (pinyinAll === "baoyu") {
+    temp = `/weather/dayu.svg`;
   } else {
     temp = "/weather/qing.svg";
   }

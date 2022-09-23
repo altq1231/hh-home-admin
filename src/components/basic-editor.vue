@@ -7,7 +7,7 @@
       mode="default"
     >
     </WangToolbar>
-    <Editor
+    <WangEditor
       style="height: 600px"
       class="editor"
       :defaultConfig="editorConfig"
@@ -21,7 +21,10 @@
 
 <script setup>
 import "@wangeditor/editor/dist/css/style.css";
-import { Editor, Toolbar as WangToolbar } from "@wangeditor/editor-for-vue";
+import {
+  Editor as WangEditor,
+  Toolbar as WangToolbar,
+} from "@wangeditor/editor-for-vue";
 import { onBeforeUnmount, ref, shallowRef, onMounted } from "vue";
 
 const props = defineProps({

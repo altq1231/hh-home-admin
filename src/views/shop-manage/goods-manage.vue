@@ -36,7 +36,11 @@
               </a-tag>
             </template>
             <template v-else-if="column.key === 'goodsImg'">
-              <img class="goods-img" :src="record.goodsImg[0].path" />
+              <img
+                v-if="record.goodsImg && record.goodsImg.length > 0"
+                class="goods-img"
+                :src="record.goodsImg[0].path"
+              />
             </template>
             <template v-else-if="column.key === 'action'">
               <a-space :size="16">
@@ -90,6 +94,12 @@ import { message } from "ant-design-vue";
 import { isVideo, isImage } from "../../utils/help";
 // @ts-ignore
 import AddGoods from "./components/add-goods.vue";
+
+// @ts-ignore
+import {
+  getAllGoods,
+  // @ts-ignore
+} from "/@/service/goods.js";
 
 const columns = [
   {
@@ -192,7 +202,7 @@ const data: DataItem[] = [...Array(20)].map((_, i) => ({
   ],
 }));
 
-const dataSource = ref(data);
+const dataSource = ref<DataItem[]>([]);
 
 const goodsTableRef = ref(null);
 const addGoodsRef = ref<any>(null);
@@ -217,10 +227,14 @@ const handleDelete = (key: string) => {
 const confirmShelves = (key: string) => {
   // console.log(key);
   dataSource.value = dataSource.value.map((item) => {
+    // @ts-ignore
     if (item.key === key) {
+      // @ts-ignore
       if (item.goodsStatus === 1) {
+        // @ts-ignore
         item.goodsStatus = 2;
       } else {
+        // @ts-ignore
         item.goodsStatus = 1;
       }
     }
@@ -250,6 +264,19 @@ const handleSize = useDebounceFn(getTableHeight, 200);
 onMounted(async () => {
   await getTableHeight();
   window.addEventListener("resize", handleSize);
+
+  const getAllGoodsRes = await getAllGoods();
+  console.log(getAllGoodsRes);
+  // @ts-ignore
+  if (getAllGoodsRes.state) {
+    console.log(getAllGoodsRes.data);
+
+    dataSource.value = getAllGoodsRes.data.map((item: any, index: number) => {
+      item.key = index.toString();
+      return item;
+    });
+    console.log(dataSource.value);
+  }
 });
 onBeforeUnmount(() => {
   window.removeEventListener("resize", handleSize);

@@ -203,6 +203,11 @@ import PreImgVideo from "/@/components/pre-img-video.vue";
 import type { FormInstance } from "ant-design-vue";
 // @ts-ignore
 import BasicEditor from "/@/components/basic-editor.vue";
+// @ts-ignore
+import {
+  createAGoods,
+  // @ts-ignore
+} from "/@/service/goods.js";
 
 interface FormState {
   goodsName: string;
@@ -220,6 +225,9 @@ const props = defineProps({
   type: {
     type: String,
     default: "add",
+  },
+  _id: {
+    default: null,
   },
 });
 
@@ -270,8 +278,21 @@ const handleModalOk = async () => {
   // @ts-ignore
   await formRef.value
     .validate()
-    .then(() => {
-      console.log("values", formState, fileList);
+    .then(async () => {
+      console.log("values", formState);
+      const addGoodsRes = await createAGoods(formState);
+      // @ts-ignore
+      if (addGoodsRes.state) {
+        // @ts-ignore
+        message.success(addGoodsRes.msg);
+        // @ts-ignore
+        formRef.value.resetFields();
+        modalVisible.value = false;
+      } else {
+        // @ts-ignore
+        message.error(addGoodsRes.msg);
+      }
+      console.log(addGoodsRes);
     })
     .catch((error) => {
       console.log("error", error);
@@ -302,6 +323,11 @@ const handleChange = (info: UploadChangeParam) => {
   if (info.file.status === "done") {
     console.log(info.file, fileList.value);
     loading.value = false;
+    // getBase64(info.file.originFileObj, (base64Url: string) => {
+    //   console.log(base64Url);
+
+    //   loading.value = false;
+    // });
   }
 
   if (info.file.status === "error") {
