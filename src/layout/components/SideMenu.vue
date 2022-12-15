@@ -21,7 +21,7 @@
         <template #icon>
           <dashboard-outlined />
         </template>
-        <span>Dashboard</span>
+        <span>商品工作台</span>
       </a-menu-item>
       <a-menu-item key="/goods-manage">
         <template #icon>
@@ -39,7 +39,7 @@
         <template #icon>
           <dashboard-outlined />
         </template>
-        <span>Dashboard</span>
+        <span>视频工作台</span>
       </a-menu-item>
       <a-menu-item key="/video-manage">
         <template #icon>
@@ -57,7 +57,7 @@
         <template #icon>
           <customer-service-outlined />
         </template>
-        <span>Dashboard</span>
+        <span>音乐工作台</span>
       </a-menu-item>
       <a-menu-item key="/music-manage">
         <template #icon>
