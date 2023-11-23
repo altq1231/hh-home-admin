@@ -1,36 +1,23 @@
 <template>
   <div class="home-page flex-col">
     <div class="home-header flex-row">
-      <a-avatar
-        class="left-avatar"
-        shape="circle"
-        :size="72"
-        src="/avatar.gif"
-      ></a-avatar>
+      <a-avatar class="left-avatar" shape="circle" :size="72" src="/avatar.gif"></a-avatar>
       <div class="fill-flex center-container flex-row">
         <div class="left-hello flex-col">
           <p class="user-info">{{ timeHello }} , {{ username }}</p>
           <p class="slogan">永远相信美好的事情即将发生！</p>
         </div>
         <div class="fill-flex weather-info">
-          <transition-group
-            name="weather-slide"
-            tag="div"
-            class="weather-container flex-row"
-          >
+          <transition-group name="weather-slide" tag="div" class="weather-container flex-row">
             <div
               v-for="(weather, index) in weatherInfo.slice(0, 4)"
               class="weather flex-col"
               :style="{ transitionDelay: index * 0.2 + 's' }"
-              :key="weather.date"
-            >
+              :key="weather.date">
               <img
-                :src="
-                  weather?.dayweather ? handleWeather(weather.dayweather) : ''
-                "
+                :src="weather?.dayweather ? handleWeather(weather.dayweather) : ''"
                 :alt="weather.dayweather"
-                class="weather-img"
-              />
+                class="weather-img" />
 
               <div class="day-weather">
                 {{ weather.dayweather }}
@@ -79,27 +66,16 @@
           <router-link to="/">查看更多</router-link>
         </div>
         <div class="operation-records-container">
-          <transition-group
-            name="records-slide"
-            tag="div"
-            class="developments-container"
-          >
+          <transition-group name="records-slide" tag="div" class="developments-container">
             <div
               class="developments-item flex-row"
               v-for="(item, index) in operationRecords.slice(0, 6)"
               :style="{ transitionDelay: index * 0.3 + 's' }"
-              :key="'info' + index"
-            >
+              :key="'info' + index">
               <img class="type-img" :src="handleType(item)" />
               <div class="flex-col fill-flex right-infos-container">
                 <div class="infos">
-                  {{
-                    item.operationType +
-                    " " +
-                    item.manageType +
-                    " " +
-                    item.operationObj
-                  }}
+                  {{ item.operationType + ' ' + item.manageType + ' ' + item.operationObj }}
                 </div>
                 <div class="date">
                   {{ computedHowLongAgo(item.operationDate) }}
@@ -107,10 +83,7 @@
               </div>
             </div>
           </transition-group>
-          <div
-            class="no-developments flex-col"
-            v-if="operationRecords.length <= 0"
-          >
+          <div class="no-developments flex-col" v-if="operationRecords.length <= 0">
             <img class="no-data-img" src="../assets/web404.svg" />
             <p class="no-data-text">暂无数据</p>
           </div>
@@ -127,46 +100,30 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from "vue";
-import { pinyin } from "pinyin-pro";
-// @ts-ignore
-import {
-  getWeather,
-  getCityCode,
-  getCityPosition,
-  getOperationRecord,
-  // @ts-ignore
-} from "/@/service/help.js";
-import {
-  MenuOutlined,
-  FileAddOutlined,
-  FrownOutlined,
-  FolderOutlined,
-} from "@ant-design/icons-vue";
-import { shallowRef } from "@vue/reactivity";
-import AMapLoader from "@amap/amap-jsapi-loader";
-// @ts-ignore
-import NumScroll from "/@/components/num-scroll.vue";
-// @ts-ignore
-import moment from "moment";
+import { ref, onMounted, computed, shallowRef } from 'vue';
+import { pinyin } from 'pinyin-pro';
+import { getWeather, getCityCode, getCityPosition, getOperationRecord } from '/@/service/help.js';
+import AMapLoader from '@amap/amap-jsapi-loader';
+import * as NumScroll from '/@/components/num-scroll.vue';
+import moment from 'moment';
 
-moment.updateLocale("en", {
+moment.updateLocale('en', {
   relativeTime: {
-    future: "%s之后",
-    past: "%s之前",
-    s: "几秒钟",
-    ss: "%d",
-    m: "1分钟",
-    mm: "%d分钟",
-    h: "1小时",
-    hh: "%d小时",
-    d: "1天",
-    dd: "%d天",
-    M: "1个月",
-    MM: "%d月",
-    y: "1年",
-    yy: "%d年",
-  },
+    future: '%s之后',
+    past: '%s之前',
+    s: '几秒钟',
+    ss: '%d',
+    m: '1分钟',
+    mm: '%d分钟',
+    h: '1小时',
+    hh: '%d小时',
+    d: '1天',
+    dd: '%d天',
+    M: '1个月',
+    MM: '%d月',
+    y: '1年',
+    yy: '%d年'
+  }
 });
 
 interface WeatherInfo {
@@ -177,49 +134,49 @@ interface WeatherInfo {
 interface OperationRecordItem {
   userId: String;
   operationDate: Date;
-  manageType: "shop" | "video" | "music";
-  operationType: "add" | "delete" | "update";
+  manageType: 'shop' | 'video' | 'music';
+  operationType: 'add' | 'delete' | 'update';
   operationObj: String;
 }
 
 const weatherArr = [
-  "bingbao",
-  "daxue",
-  "dayu",
-  "duoyun",
-  "leizhenyu",
-  "longjuanfeng",
-  "qing",
-  "shachenbao",
-  "taifeng",
-  "wu",
-  "wumai",
-  "xiaoxue",
-  "xiaoyu",
-  "xiaoyu",
-  "yangchen",
-  "yin",
-  "yujiaxue",
-  "zhenxue",
-  "zhenyu",
-  "zhongxue",
-  "zhongyu",
+  'bingbao',
+  'daxue',
+  'dayu',
+  'duoyun',
+  'leizhenyu',
+  'longjuanfeng',
+  'qing',
+  'shachenbao',
+  'taifeng',
+  'wu',
+  'wumai',
+  'xiaoxue',
+  'xiaoyu',
+  'xiaoyu',
+  'yangchen',
+  'yin',
+  'yujiaxue',
+  'zhenxue',
+  'zhenyu',
+  'zhongxue',
+  'zhongyu'
 ];
 
 const handleWeather = (dayWeather: string) => {
   const pinyinAll = pinyin(dayWeather, {
-    toneType: "none",
-    type: "string",
-  }).replace(/\s*/g, "");
+    toneType: 'none',
+    type: 'string'
+  }).replace(/\s*/g, '');
 
-  let temp = "";
+  let temp = '';
 
   if (weatherArr.includes(pinyinAll)) {
     temp = `/weather/${pinyinAll}.svg`;
-  } else if (pinyinAll === "baoyu") {
-    temp = `/weather/dayu.svg`;
+  } else if (pinyinAll === 'baoyu') {
+    temp = '/weather/dayu.svg';
   } else {
-    temp = "/weather/qing.svg";
+    temp = '/weather/qing.svg';
   }
 
   return temp;
@@ -231,27 +188,27 @@ const timeHello = computed(() => {
   // 获取当前小时
   const hours = timeNow.getHours();
   // 设置默认文字
-  let text = ``;
+  let text = '';
   // 判断当前时间段
   if (hours >= 0 && hours <= 6) {
-    text = `凌晨好`;
+    text = '凌晨好';
   } else if (hours > 6 && hours <= 10) {
-    text = `上午好`;
+    text = '上午好';
   } else if (hours > 10 && hours <= 14) {
-    text = `中午好`;
+    text = '中午好';
   } else if (hours > 14 && hours <= 18) {
-    text = `下午好`;
+    text = '下午好';
   } else if (hours > 18 && hours <= 24) {
-    text = `晚上好`;
+    text = '晚上好';
   }
   // 返回当前时间段对应的状态
   return text;
 });
-const username = sessionStorage.getItem("username");
+const username = sessionStorage.getItem('username');
 const weatherInfo = ref([] as WeatherInfo[]);
 const operationRecords = ref([] as OperationRecordItem[]);
 
-const num = ref("0");
+const num = ref('0');
 
 const handleAbsoluteData = (aData: any) => {
   console.log(aData);
@@ -259,48 +216,48 @@ const handleAbsoluteData = (aData: any) => {
 };
 
 const handleType = (item: OperationRecordItem) => {
-  if (item.manageType === "music") {
-    return "/music-m.svg";
-  } else if (item.manageType === "video") {
-    return "/video-m.svg";
+  if (item.manageType === 'music') {
+    return '/music-m.svg';
+  } else if (item.manageType === 'video') {
+    return '/video-m.svg';
   } else {
-    return "/goods-m.svg";
+    return '/goods-m.svg';
   }
 };
 
 const computedHowLongAgo = (time: Date) => {
-  return moment().to(moment(time).format("YYYY-MM-DD HH:mm:ss"));
+  return moment().to(moment(time).format('YYYY-MM-DD HH:mm:ss'));
 };
 
-const city = ref("");
-const cityCode = ref("");
+const city = ref('');
+const cityCode = ref('');
 let map = shallowRef({} as any);
 
 // 实验性功能 获取地理位置
 const getLocation = () => {
   let geolocation: any;
   AMapLoader.load({
-    key: "54b93b6d2c88621a41007c06b9e4781f", //设置您的key
-    version: "2.0",
-    plugins: ["AMap.ToolBar", "AMap.Driving"],
+    key: '54b93b6d2c88621a41007c06b9e4781f', //设置您的key
+    version: '2.0',
+    plugins: ['AMap.ToolBar', 'AMap.Driving'],
     AMapUI: {
-      version: "1.1",
-      plugins: [],
+      version: '1.1',
+      plugins: []
     },
     Loca: {
-      version: "2.0.0",
-    },
+      version: '2.0.0'
+    }
   })
     .then((AMap) => {
-      map.value = new AMap.Map("mapContainer", {
+      map.value = new AMap.Map('mapContainer', {
         //设置地图容器id
-        viewMode: "3D", //是否为3D地图模式
-        zoom: 5, //初始化地图级别
+        viewMode: '3D', //是否为3D地图模式
+        zoom: 5 //初始化地图级别
         // center: [105.602725, 37.076636], //初始化地图中心点位置
       });
 
       // @ts-ignore
-      AMap.plugin(["AMap.Geolocation"], function () {
+      AMap.plugin(['AMap.Geolocation'], function () {
         geolocation = new AMap.Geolocation({
           // 是否使用高精度定位，默认：true
           enableHighAccuracy: true,
@@ -311,13 +268,13 @@ const getLocation = () => {
           //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
           zoomToAccuracy: true,
           //  定位按钮的排放位置,  RB表示右下
-          position: "RB",
+          position: 'RB'
         });
       });
 
       geolocation.getCurrentPosition(function (status: any, result: any) {
-        if (status == "complete") {
-          console.log("获取到的位置", result);
+        if (status == 'complete') {
+          console.log('获取到的位置', result);
         } else {
           console.error(result);
         }
@@ -334,35 +291,35 @@ const getLocation = () => {
 
 const initMap = () => {
   AMapLoader.load({
-    key: "54b93b6d2c88621a41007c06b9e4781f", //设置您的key
-    version: "2.0",
-    plugins: ["AMap.ToolBar", "AMap.Driving"],
+    key: '54b93b6d2c88621a41007c06b9e4781f', //设置您的key
+    version: '2.0',
+    plugins: ['AMap.ToolBar', 'AMap.Driving'],
     AMapUI: {
-      version: "1.1",
-      plugins: [],
+      version: '1.1',
+      plugins: []
     },
     Loca: {
-      version: "2.0.0",
-    },
+      version: '2.0.0'
+    }
   })
     .then((AMap) => {
-      map.value = new AMap.Map("mapContainer", {
+      map.value = new AMap.Map('mapContainer', {
         //设置地图容器id
-        viewMode: "3D", //是否为3D地图模式
-        zoom: 10, //初始化地图级别
+        viewMode: '3D', //是否为3D地图模式
+        zoom: 10 //初始化地图级别
         // mapStyle: "amap://styles/c558c633a5c36003169dbcc6c0bdd432",
         // center: [105.602725, 37.076636], //初始化地图中心点位置
       });
     })
     .catch((e) => {
-      console.log("加载高德地图错误", e);
+      console.log('加载高德地图错误', e);
     });
 };
 
 onMounted(async () => {
   const cityPosition: any = await getCityPosition();
 
-  if (cityPosition.status === "1") {
+  if (cityPosition.status === '1') {
     const adCode: any = await getCityCode(cityPosition.city);
     let tempInfo: any;
     console.log(cityPosition, adCode);
@@ -378,12 +335,12 @@ onMounted(async () => {
 
   await initMap();
 
-  const recordsData = await getOperationRecord(sessionStorage.getItem("_id"));
+  const recordsData = await getOperationRecord(sessionStorage.getItem('_id'));
 
   operationRecords.value = recordsData.data;
 
   setTimeout(() => {
-    num.value = "100";
+    num.value = '100';
   }, 1000);
 });
 </script>
